@@ -14,9 +14,9 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a href="/" class="button" class:is-primary={$page.url.pathname === '/'}>Home</a>
+          <!-- <a href="/" class="button" class:is-primary={$page.url.pathname === '/'}>Home</a> -->
           <a href="/login" class="button" class:is-primary={$page.url.pathname === '/login'}>Log in</a>
-          <a href="/signup" class="button" class:is-primary={$page.url.pathname === '/signup'}>Sign up</a>
+          <!-- <a href="/signup" class="button" class:is-primary={$page.url.pathname === '/signup'}>Sign up</a> -->
         </div>
       </div>
     </div>
