@@ -35,7 +35,6 @@
   }
 </script>
 
-
 <section class="hero is-fullheight-with-navbar landing-hero">
   <div class="hero-body">
     <div class="container">
@@ -111,38 +110,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .landing-hero {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 58, 143, 0.08),
-    rgba(0, 177, 64, 0.08)
-  );
-}
-
-.landing-card {
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  padding: 2.5rem;
-}
-
-.landing-logo {
-  width: min(280px, 70vw);
-  height: auto;
-  object-fit: contain;
-}
-
-/* SD Worx button */
-.sdw-button {
-  background-color: #003a8f;
-  color: #ffffff;
-  border: none;
-}
-
-.sdw-button:hover {
-  background-color: #002f73;
-  color: #ffffff;
-}
-
-</style>

@@ -8,15 +8,21 @@
         <div class="column is-10-tablet is-7-desktop is-6-widescreen">
           <!-- ONE main card -->
           <div class="box landing-card">
-            <div class="has-text-centered mb-">
+            <div class="has-text-centered mb-5">
               <img class="landing-logo" src="/sd-worx-logo.png" alt="SD Worx Expenses" />
             </div>
+
+            <div class="has-text-centered mb-4">
+              <h1 class="title is-3">Expense Management System</h1>
+              <p>Manage and submit ERR Expenses efficiently with our secure web application.</p>
+              <br />
+            </div>
+
 
             <!-- Login button INSIDE the card -->
             <div class="has-text-centered mb-5">
               <a class="button sdw-button is-medium" href="/login">Log in</a>
             </div>
-
             <div class="columns is-multiline is-mobile">
               <div class="column is-6">
                 <div class="feature">
@@ -65,57 +71,3 @@
     </div>
   </div>
 </section>
-
-<style>
-  .landing-hero {
-  background: linear-gradient(
-    135deg,
-    rgba(0, 58, 143, 0.08),
-    rgba(0, 177, 64, 0.08)
-  );
-}
-
-.landing-card {
-  border-radius: 16px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  padding: 2rem;
-}
-
-.landing-logo {
-  width: min(420px, 80vw);
-  height: auto;
-  object-fit: contain;
-}
-
-.feature {
-  padding: 0.75rem;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.75);
-  height: 100%;
-}
-
-.feature-title {
-  font-weight: 700;
-  margin-bottom: 0.25rem;
-  color: #003a8f;
-}
-
-.feature-text {
-  color: #4a4a4a;
-  font-size: 0.95rem;
-  margin-bottom: 0;
-}
-
-/* SD Worx button */
-.sdw-button {
-  background-color: #003a8f;
-  color: #ffffff;
-  border: none;
-}
-
-.sdw-button:hover {
-  background-color: #002f73;
-  color: #ffffff;
-}
-
-</style>

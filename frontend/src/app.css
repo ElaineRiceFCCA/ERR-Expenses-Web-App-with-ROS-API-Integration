@@ -1,0 +1,55 @@
+/* ============================
+         SD Worx Styles
+   ============================ */
+
+.landing-hero {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 58, 143, 0.08),
+    rgba(0, 177, 64, 0.08)
+  );
+}
+
+.landing-card {
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+}
+
+.landing-logo {
+  width: min(420px, 80vw);
+  height: auto;
+  object-fit: contain;
+}
+
+.feature {
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  height: 100%;
+}
+
+.feature-title {
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #003a8f;
+}
+
+.feature-text {
+  color: #4a4a4a;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+/* SD Worx button */
+.button.sdw-button {
+  background-color: #da3300;
+  color: #ffffff;
+  border: none;
+}
+
+.button.sdw-button:hover,
+.button.sdw-button:focus {
+  background-color: #002f73;
+  color: #ffffff;
+}
