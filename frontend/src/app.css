@@ -2,6 +2,62 @@
          SD Worx Styles
    ============================ */
 
+:root {
+  /* Brand Colors */
+  --sdw-primary: #2a4b8d; /* Deep SD Worx Blue */
+  --sdw-primary-light: #e7f0ff; /* Light blue hover / background */
+  --sdw-accent: #f37c21; /* SD Worx Orange accent */
+  --sdw-accent-light: #ffe7d1;
+  --sdw-bg: #f5f6fa; /* App background gray */
+  --sdw-surface: #ffffff; /* Cards, boxes, navbars */
+  --sdw-border: #e0e4eb; /* Light divider lines */
+  --sdw-danger: #d93025; /* Error red */
+  --sdw-success: #34c759; /* Success green */
+  --sdw-warning: #c96b00; /* Warning amber */
+  --sdw-info: #0062cc; /* Info blue */
+
+  /* Typography */
+  --font-family-base: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-size-base: 16px;
+  --font-size-sm: 0.875rem; /* small text */
+  --font-size-lg: 1.125rem; /* large text */
+  --font-weight-normal: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --line-height-base: 1.6;
+
+  /* Layout & Spacing Scale */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Borders & Shadows */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.25s ease;
+  --transition-slow: 0.4s ease;
+}
+
+/* Page base */
+body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  color: #333;
+  background-color: var(--sdw-bg);
+}
+
+/* Landing */
 .landing-hero {
   background: linear-gradient(
     135deg,
@@ -41,7 +97,62 @@
   margin-bottom: 0;
 }
 
-/* SD Worx button */
+/* Dashboards */
+.admin-dashboard,
+.processor-dashboard {
+  background-color: var(--sdw-bg);
+  min-height: 100vh;
+  padding-top: var(--spacing-xl);
+}
+
+/* Cards / boxes */
+.sdw-box {
+  background-color: var(--sdw-surface);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-xl);
+  border: 1px solid var(--sdw-border);
+}
+
+/* Tables */
+.sdw-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.sdw-table th {
+  color: #555;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  font-size: var(--font-size-sm);
+  border-bottom: 2px solid var(--sdw-border);
+  padding: var(--spacing-sm);
+}
+
+.sdw-table td {
+  vertical-align: middle;
+  padding: var(--spacing-sm);
+  border-bottom: 1px solid var(--sdw-border);
+}
+
+.sdw-table tr:hover {
+  background-color: var(--sdw-primary-light);
+}
+
+/* Buttons */
+
+.sdw-button {
+  background-color: var(--sdw-primary);
+  color: var(--sdw-surface);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+}
+
+.sdw-button:hover {
+  background-color: var(--sdw-accent);
+}
+
 .button.sdw-button {
   background-color: #da3300;
   color: #ffffff;
@@ -52,4 +163,126 @@
 .button.sdw-button:focus {
   background-color: #002f73;
   color: #ffffff;
+}
+
+.button.is-link.is-light {
+  background-color: var(--sdw-primary-light);
+  color: var(--sdw-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.button.is-info.is-light {
+  color: var(--sdw-info);
+}
+
+.button.is-warning.is-light {
+  color: var(--sdw-warning);
+}
+
+/* Tags */
+.tag.is-success {
+  background-color: var(--sdw-success) !important;
+  color: var(--sdw-surface) !important;
+}
+
+.tag.is-danger {
+  background-color: var(--sdw-danger) !important;
+  color: var(--sdw-surface) !important;
+}
+
+/* Navbar */
+.sdw-navbar {
+  background: var(--sdw-bg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.sdw-navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sdw-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sdw-nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.sdw-nav-button {
+  border: none;
+  background-color: transparent;
+  color: var(--sdw-primary);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.sdw-nav-button:hover {
+  background-color: var(--sdw-primary-light);
+}
+
+.sdw-nav-button.is-active {
+  background-color: var(--sdw-primary);
+  color: var(--sdw-surface);
+}
+
+.sdw-logout {
+  background-color: var(--sdw-surface);
+  border: 1px solid var(--sdw-border);
+  border-radius: var(--radius-sm);
+  color: #333;
+  padding: var(--spacing-sm) var(--spacing-md);
+  transition: background-color var(--transition-fast);
+}
+
+.sdw-logout:hover {
+  background-color: var(--sdw-danger);
+  color: var(--sdw-surface);
+}
+
+.sdw-user-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: right;
+  margin-top: 0.25rem;
+  margin-right: 1rem;
+}
+
+/* Utilities */
+.text-muted {
+  color: #777;
+}
+
+.text-primary {
+  color: var(--sdw-primary);
+}
+
+.bg-surface {
+  background-color: var(--sdw-surface);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+/* Notifications */
+.notification.is-danger {
+  background-color: var(--sdw-danger);
+  color: var(--sdw-surface);
+}
+
+.notification.is-success {
+  background-color: var(--sdw-success);
+  color: var(--sdw-surface);
 }

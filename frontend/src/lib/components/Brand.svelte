@@ -9,5 +9,5 @@
     width="174"
     height="174"
   />
-  <div class="ml-4">Expenses Web App with ROS API Integration</div>
+  <div class="ml-4">Expense Management System</div>
 </div>

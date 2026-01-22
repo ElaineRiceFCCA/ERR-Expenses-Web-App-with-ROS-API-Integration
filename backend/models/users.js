@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true }, // Hashed password
     role: { type: String, enum: ["admin", "processor"], default: "processor" }, // RBAC
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Encrypt password before saving to DB

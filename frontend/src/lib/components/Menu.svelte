@@ -1,12 +1,12 @@
 <script lang="ts">
-  export let className = '';
-
   import { page } from '$app/stores';
   import { derived } from 'svelte/store';
   import { onMount } from 'svelte';
   import { goto } from '$app/navigation';
   import Brand from './Brand.svelte';
   import Navbar from './Navbar.svelte';
+
+  export let className = '';
 
   const currentPath = derived(page, ($page) => $page.url.pathname as string);
 
@@ -26,47 +26,39 @@
 
   function logout() {
     localStorage.removeItem('token');
-    goto('/');
+    localStorage.removeItem('role');
+    goto('/login');
   }
 </script>
 
-  {#if userEmail}
-     <p class="mt-5 is-size-9 has-text-grey has-text-right" style="width: 98%;"><strong>Logged in user:</strong> {userEmail} </p>
-  {/if}
-<nav class={`navbar ${className}`} aria-label="main navigation">
-  <div class="navbar-brand">
-    <Brand />
-    <Navbar />
-  </div>
-  <div class="navbar-menu" id="navMenu">
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          {#each [
-            { id: 'home', href: '/home', label: 'Home' },
-            { id: 'dashboard', href: '/dashboard', label: 'Dashboard' },
-            { id: 'trailsRidden', href: '/trailsRidden', label: 'Trails Ridden' },
-            { id: 'charts', href: '/charts', label: 'Charts' },
-            { id: 'map', href: '/map', label: 'Map' },
-            { id: 'about', href: '/about', label: 'About' },
-            { id: 'account', href: '/account', label: 'Accounts' },
-            { id: 'API', href: 'https://mtbtrails-v2-backend.onrender.com/documentation', label: 'API Documentation', external: true }
-          ] as link}
-            <a
-              id={link.id}
-              class="button { $currentPath === link.href ? 'is-primary' : '' }"
-              href={link.href}
-              target={link.external ? "_blank" : null}
-              rel={link.external ? "noopener noreferrer" : null}
-            >
-              {link.label}
-            </a>
-          {/each}
-
-          <!-- Logout button -->
-          <button class="button" on:click={logout}>Logout</button>
-        </div>
-      </div>
+<header class="sdw-navbar">
+  <div class="sdw-navbar-content">
+    <div class="sdw-brand">
+      <Brand />
+      <Navbar />
     </div>
+
+    <nav class="sdw-nav-links">
+      {#each [
+        { id: 'home', href: '/home', label: 'Home' },
+        { id: 'account', href: '/account', label: 'Accounts' }
+      ] as link}
+        <a
+          id={link.id}
+          class="sdw-nav-button { $currentPath === link.href ? 'is-active' : '' }"
+          href={link.href}
+        >
+          {link.label}
+        </a>
+      {/each}
+
+      <button class="sdw-logout" on:click={logout}>Logout</button>
+    </nav>
   </div>
-</nav>
+
+  {#if userEmail}
+    <p class="sdw-user-label">
+      Logged in: <strong>{userEmail}</strong>
+    </p>
+  {/if}
+</header>
