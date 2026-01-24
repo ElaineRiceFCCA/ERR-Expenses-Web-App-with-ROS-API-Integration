@@ -25,7 +25,7 @@ export async function login(
     // Persist credentials
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
-    localStorage.setItem("email", data.email);
+    localStorage.setItem("user", data.name);
 
     return {
       token: data.token,
