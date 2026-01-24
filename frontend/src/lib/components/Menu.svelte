@@ -6,27 +6,18 @@
   import Brand from './Brand.svelte';
   import Navbar from './Navbar.svelte';
 
-  export let className = '';
-
   const currentPath = derived(page, ($page) => $page.url.pathname as string);
 
   let userEmail: string | null = null;
 
   onMount(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        userEmail = payload.email || 'Unknown';
-      } catch {
-        userEmail = 'Invalid token';
-      }
-    }
+    userEmail = localStorage.getItem('email');
   });
 
   function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('email');
     goto('/login');
   }
 </script>
@@ -58,7 +49,7 @@
 
   {#if userEmail}
     <p class="sdw-user-label">
-      Logged in: <strong>{userEmail}</strong>
+      <strong>Logged in:</strong> {userEmail}
     </p>
   {/if}
 </header>
