@@ -15,7 +15,7 @@
     const role = localStorage.getItem('role');
 
     if (!token) return goto('/login');
-    if (role !== 'processor') return goto('/admin');
+    if (role !== 'processor' && role !== 'admin') return goto('/admin');
 
     try {
       const res = await fetch('http://localhost:5000/api/processor/claims', {

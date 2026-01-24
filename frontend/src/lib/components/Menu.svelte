@@ -6,7 +6,7 @@
   import Brand from './Brand.svelte';
   import Navbar from './Navbar.svelte';
 
-  const currentPath = derived(page, ($page) => $page.url.pathname as string);
+  const currentPath = derived(page, ($page) => $page.url.pathname);
 
   let userName: string | null = null;
   let role: 'admin' | 'processor' | null = null;
@@ -17,19 +17,18 @@
   });
 
   function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    localStorage.removeItem('user');
+    localStorage.clear();
     goto('/login');
   }
 
-  // RBAC menu definitions
+  // Admin-only navigation
   const adminLinks = [
-    { id: 'processing', href: '/admin/processing', label: 'Processing' },
+    { id: 'processing', href: '/processor', label: 'Processing' },
     { id: 'config', href: '/admin/config', label: 'Config' },
     { id: 'reports', href: '/admin/reports', label: 'Reports' }
   ];
 
+  // Processor navigation
   const processorLinks = [
     { id: 'employees', href: '/processor/employees', label: 'Employees' },
     { id: 'elements', href: '/processor/elements', label: 'Elements' },
@@ -37,6 +36,8 @@
     { id: 'submissions', href: '/processor/submissions', label: 'Submissions' },
     { id: 'reports', href: '/processor/reports', label: 'Reports' }
   ];
+
+  $: isProcessorRoute = $currentPath.startsWith('/processor');
 </script>
 
 <header class="sdw-navbar">
@@ -47,11 +48,11 @@
     </div>
 
     <nav class="sdw-nav-links">
-      <!-- ADMIN MENU -->
-      {#if role === 'admin'}
+
+      <!-- ADMIN on ADMIN routes -->
+      {#if role === 'admin' && !isProcessorRoute}
         {#each adminLinks as link}
           <a
-            id={link.id}
             href={link.href}
             class="sdw-nav-button { $currentPath.startsWith(link.href) ? 'is-active' : '' }"
           >
@@ -60,17 +61,23 @@
         {/each}
       {/if}
 
-      <!-- PROCESSOR MENU -->
-      {#if role === 'processor'}
+      <!-- PROCESSOR routes (processor OR admin acting as processor) -->
+      {#if isProcessorRoute && (role === 'processor' || role === 'admin')}
         {#each processorLinks as link}
           <a
-            id={link.id}
             href={link.href}
             class="sdw-nav-button { $currentPath.startsWith(link.href) ? 'is-active' : '' }"
           >
             {link.label}
           </a>
         {/each}
+
+        <!-- Admin shortcut -->
+        {#if role === 'admin'}
+          <a href="/admin" class="sdw-nav-button is-admin">
+            Admin
+          </a>
+        {/if}
       {/if}
 
       <!-- LOGOUT -->

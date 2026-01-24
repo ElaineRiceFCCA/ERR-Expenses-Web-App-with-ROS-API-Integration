@@ -286,3 +286,9 @@ body {
   background-color: var(--sdw-success);
   color: var(--sdw-surface);
 }
+
+.sdw-nav-button.is-admin {
+  background-color: var(--sdw-accent-light);
+  color: var(--sdw-primary);
+  font-weight: var(--font-weight-semibold);
+}
