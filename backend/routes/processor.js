@@ -20,7 +20,11 @@ router.get("/dashboard", protect, (req, res) => {
 // Submit a new expense claim
 router.post("/claim", protect, async (req, res) => {
   try {
-    const { amount, description } = req.body;
+    const { amount, description, payDate } = req.body;
+
+    if (!payDate) {
+      return res.status(400).json({ message: "paydate is required" });
+    }
 
     if (amount === undefined || amount === null) {
       return res.status(400).json({ message: "amount is required" });
@@ -30,6 +34,7 @@ router.post("/claim", protect, async (req, res) => {
       processor: req.user._id,
       amount,
       description,
+      payDate: new Date(payDate),
     });
 
     res.status(201).json({ message: "Claim created successfully", claim });
@@ -43,7 +48,7 @@ router.post("/claim", protect, async (req, res) => {
 // Get all claims for current processor (inc audit info)
 router.get("/claims", protect, async (req, res) => {
   try {
-    const claims = await Claim.find({ processor: req.user._id })
+    const claims = await Claim.find({})
       .populate("processor", "name role email") // for auditing
       .sort({ createdAt: -1 });
     res.json(claims);

@@ -8,14 +8,25 @@ const claimSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
     amount: { type: Number, required: true },
+
     description: { type: String, required: true },
+
+    // Pay date (relevant for Revenue)
+    payDate: {
+      type: Date,
+      required: true,
+    },
+
     status: {
       type: String,
       enum: ["pending", "generated", "submitted", "rejected"],
       default: "pending",
     },
   },
+
+  // Timestamp (relevant for audit trail)
   { timestamps: true },
 );
 

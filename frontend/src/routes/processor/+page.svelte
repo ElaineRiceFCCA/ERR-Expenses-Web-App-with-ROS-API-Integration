@@ -6,6 +6,7 @@
   let claims: any[] = [];
   let amount = '';
   let description = '';
+  let payDate = '';
   let message = '';
   let error = '';
   let loading = true;
@@ -46,13 +47,18 @@
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ amount, description }),
+        body: JSON.stringify({
+        amount,
+        description,
+        payDate,
+        }),
       });
 
       if (res.ok) {
         message = 'Claim submitted successfully!';
         amount = '';
         description = '';
+        payDate = '';
         fetchClaims(); // refresh list
       } else {
         error = 'Failed to submit claim.';
@@ -84,19 +90,22 @@
       <h2 class="subtitle has-text-weight-semibold mb-3">New Claim</h2>
 
       <form on:submit|preventDefault={submitClaim}>
-        <div class="field">
-          <label class="label">Amount (€)</label>
-          <div class="control">
-            <input
-              class="input"
-              type="number"
-              step="0.01"
-              bind:value={amount}
-              placeholder="Enter amount"
-              required
-            />
-          </div>
-        </div>
+
+<div class="field">
+  <label class="label">Paydate</label>
+  <div class="control">
+    <input
+      class="input"
+      type="date"
+      bind:value={payDate}
+      required
+    />
+  </div>
+  <p class="help has-text-grey">
+    Date the reimbursement will be paid to employees
+  </p>
+</div>
+
 
         <div class="field">
           <label class="label">Description</label>
@@ -106,6 +115,20 @@
               type="text"
               bind:value={description}
               placeholder="e.g. Travel expenses, accommodation..."
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Amount (€)</label>
+          <div class="control">
+            <input
+              class="input"
+              type="number"
+              step="0.01"
+              bind:value={amount}
+              placeholder="Enter amount"
               required
             />
           </div>
@@ -131,17 +154,21 @@
         <table class="sdw-table">
           <thead>
             <tr>
+              <th>Pay date</th>
+              <th>Expense Description</th>
+              <th>Days</th>
               <th>Amount (€)</th>
-              <th>Description</th>
               <th>Status</th>
-              <th>Date</th>
             </tr>
           </thead>
           <tbody>
             {#each claims as claim}
               <tr>
-                <td>{claim.amount}</td>
+                <td>{new Date(claim.payDate).toLocaleDateString()}</td>
+                <!-- <td>{new Date(claim.createdAt).toLocaleDateString()}</td> -->
                 <td>{claim.description}</td>
+                <td>"Days TODO"</td>
+                <td>{claim.amount}</td>
                 <td>
                   <span
                     class="tag is-rounded"
@@ -152,7 +179,6 @@
                     {claim.status || 'Pending'}
                   </span>
                 </td>
-                <td>{new Date(claim.createdAt).toLocaleDateString()}</td>
               </tr>
             {/each}
           </tbody>
