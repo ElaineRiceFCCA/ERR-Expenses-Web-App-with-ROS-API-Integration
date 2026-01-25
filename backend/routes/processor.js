@@ -40,12 +40,12 @@ router.post("/claim", protect, async (req, res) => {
   }
 });
 
-// Get all claims for current processor
+// Get all claims for current processor (inc audit info)
 router.get("/claims", protect, async (req, res) => {
   try {
-    const claims = await Claim.find({ processor: req.user._id }).sort({
-      createdAt: -1,
-    });
+    const claims = await Claim.find({ processor: req.user._id })
+      .populate("processor", "name role email") // for auditing
+      .sort({ createdAt: -1 });
     res.json(claims);
   } catch (err) {
     res

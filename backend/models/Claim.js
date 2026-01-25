@@ -9,14 +9,14 @@ const claimSchema = new mongoose.Schema(
       required: true,
     },
     amount: { type: Number, required: true },
-    description: { type: String, default: "" },
+    description: { type: String, required: true },
     status: {
       type: String,
-      enum: ["pending", "approved", "submitted"],
+      enum: ["pending", "generated", "submitted", "rejected"],
       default: "pending",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Claim", claimSchema);
