@@ -1,0 +1,407 @@
+{
+  "enhancedReportingRunReference": "ERI4-2025091N",
+  "submissionID": "ERI4-2025091N-ER1",
+  "requestBody": {
+    "expensesBenefits": [
+      {
+        "lineItemID": "ERI4-2025091N-ER1-1",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "REMOTE_WORKING_DAILY_ALLOWANCE",
+        "paymentDate": "2025-09-30",
+        "numberOfDays": "1",
+        "amount": "20"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-2",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "SMALL_BENEFITS_EXEMPTION",
+        "paymentDate": "2025-09-30",
+        "amount": "1000"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-3",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "EATING_ON_SITE",
+        "paymentDate": "2025-09-30",
+        "amount": "96"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-4",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "EMERGENCY_TRAVEL",
+        "paymentDate": "2025-09-30",
+        "amount": "85"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-5",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SITE_BASED_EMPLOYEES",
+        "paymentDate": "2025-09-30",
+        "amount": "74"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-6",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SUBSISTENCE_UNVOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "63"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-7",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SUBSISTENCE_VOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "52"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-8",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "TRAVEL_UNVOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "41"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-9",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "familyName": "Hunter",
+          "firstName": "Christina"
+        },
+        "address": null,
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "TRAVEL_VOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "20"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-10",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "REMOTE_WORKING_DAILY_ALLOWANCE",
+        "paymentDate": "2025-09-30",
+        "numberOfDays": "2",
+        "amount": "20"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-11",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "SMALL_BENEFITS_EXEMPTION",
+        "paymentDate": "2025-09-30",
+        "amount": "2000"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-12",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "EATING_ON_SITE",
+        "paymentDate": "2025-09-30",
+        "amount": "186"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-13",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "EMERGENCY_TRAVEL",
+        "paymentDate": "2025-09-30",
+        "amount": "165"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-14",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SITE_BASED_EMPLOYEES",
+        "paymentDate": "2025-09-30",
+        "amount": "144"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-15",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SUBSISTENCE_UNVOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "123"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-16",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "SUBSISTENCE_VOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "102"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-17",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "TRAVEL_UNVOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "81"
+      },
+      {
+        "lineItemID": "ERI4-2025091N-ER1-18",
+        "employeeID": null,
+        "employerReference": "199C6A3D-C9F1-4362-81AB-A8C283DC2745",
+        "name": {
+          "familyName": "Murphy",
+          "firstName": "Susan"
+        },
+        "address": {
+          "addressLines": [
+            {
+              "addressLine": "110 Bayview Road Rush Road"
+            },
+            {
+              "addressLine": "Skerries"
+            },
+            {
+              "addressLine": "Co. Dublin"
+            }
+          ],
+          "countryCode": "DNK"
+        },
+        "dateOfBirth": "1976-11-30",
+        "category": "TRAVEL_AND_SUBSISTENCE",
+        "subCategory": "TRAVEL_VOUCHED",
+        "paymentDate": "2025-09-30",
+        "amount": "60"
+      }
+    ]
+  },
+  "requestType": "EnhancedReportingSubmission",
+  "employerRegistrationNumber": "9027637HH",
+  "taxYear": 2025,
+  "softwareUsed": "MegaPay",
+  "softwareVersion": "3.25.1.1592"
+}
