@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
+import submissionRoutes from "./routes/submissions.js";
 
 // Route files
 import authRoutes from "./routes/auth.js";
@@ -19,6 +20,7 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/processor", processorRoutes);
+app.use("/api/submissions", submissionRoutes);
 
 // Root endpoint (for testing API)
 app.get("/", (req, res) => res.send("ERR Expenses Web App API Running"));

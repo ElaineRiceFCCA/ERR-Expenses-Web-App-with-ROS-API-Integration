@@ -24,6 +24,18 @@ const claimSchema = new mongoose.Schema(
       enum: ["pending", "generated", "submitted", "rejected"],
       default: "pending",
     },
+
+    employee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Employee",
+      required: true,
+    },
+
+    element: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Element",
+      required: true,
+    },
   },
 
   // Timestamp (relevant for audit trail)
