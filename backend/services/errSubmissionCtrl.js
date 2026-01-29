@@ -16,8 +16,19 @@ export async function generateERRSubmission(payDate) {
     throw new Error("No claims found for payDate");
   }
 
+  // 3. Compile run references
+  const yyyyMM = payDate.toISOString().slice(0, 7).replace("-", "");
+  const runSequence = "1N";
+
+  const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}${runSequence}`;
+
+  const submissionID = `${enhancedReportingRunReference}-ER1`;
+
   return {
     employerRegistrationNumber: company.employerRegistrationNumber,
     taxYear: company.taxYear,
+    claimCount: claims.length,
+    enhancedReportingRunReference,
+    submissionID,
   };
 }
