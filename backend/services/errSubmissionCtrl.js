@@ -1,8 +1,12 @@
+import Company from "../models/Company.js";
+
 export async function generateERRSubmission(payDate) {
-  if (!payDate) throw new Error("payDate required");
+  // Load company details
+  const company = await Company.findOne({ active: true });
+  if (!company) throw new Error("No active company found");
 
   return {
-    message: "Test Submission",
-    payDate,
+    employerRegistrationNumber: company.employerRegistrationNumber,
+    taxYear: company.taxYear,
   };
 }
