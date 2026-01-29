@@ -24,11 +24,27 @@ export async function generateERRSubmission(payDate) {
 
   const submissionID = `${enhancedReportingRunReference}-ER1`;
 
+  // 4. Build line items
+  const expensesBenefits = claims.map((claim, index) => {
+    const empl = claim.employee;
+    const celms = claim.element;
+
+    const lineItem = {
+      lineItemID: `${submissionID}-${index + 1}`,
+      category: celms.category,
+      paymentDate: claim.payDate.toISOString().slice(0, 10),
+      amount: claim.amount.toFixed(2),
+    };
+
+    return lineItem;
+  });
+
   return {
     employerRegistrationNumber: company.employerRegistrationNumber,
     taxYear: company.taxYear,
     claimCount: claims.length,
     enhancedReportingRunReference,
     submissionID,
+    expensesBenefits,
   };
 }
