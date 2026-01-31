@@ -1,0 +1,27 @@
+{
+  "enhancedReportingRunReference": "ERI4-2026011N",
+  "submissionID": "ERI4-2026011N-ER1",
+  "requestBody": {
+    "requestType": "EnhancedReportingSubmission",
+    "employerRegistrationNumber": "9027637HH",
+    "taxYear": 2025,
+    "softwareUsed": "ERRExpenseManagementSystem",
+    "softwareVersion": "0.01.0.0001",
+    "expensesBenefits": [
+      {
+        "lineItemID": "ERI4-2026011N-ER1-1",
+        "category": "REMOTE_WORKING_DAILY_ALLOWANCE",
+        "paymentDate": "2026-01-27",
+        "amount": "2.00",
+        "employeeID": {
+          "employmentID": "BEBDEB174E094CBBBB8C",
+          "employeePpsn": "1111113P"
+        },
+        "name": {
+          "firstName": "Jane",
+          "familyName": "Blogs"
+        }
+      }
+    ]
+  }
+}

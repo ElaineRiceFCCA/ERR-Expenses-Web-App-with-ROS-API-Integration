@@ -32,9 +32,11 @@ router.post("/claim", protect, async (req, res) => {
 
     const claim = await Claim.create({
       processor: req.user._id,
-      amount,
-      description,
-      payDate: new Date(payDate),
+      employee: req.body.employee,
+      element: req.body.element,
+      amount: req.body.amount,
+      description: req.body.description,
+      payDate: new Date(req.body.payDate),
     });
 
     res.status(201).json({ message: "Claim created successfully", claim });

@@ -4,12 +4,20 @@
   import Menu from '$lib/components/Menu.svelte';
 
   let claims: any[] = [];
+  let employees: any[] = [];
+  let elements: any[] = [];
+
+  let selectedEmployee = '';
+  let selectedElement = '';
+
   let amount = '';
   let description = '';
   let payDate = '';
   let message = '';
   let error = '';
   let loading = true;
+  let employee = '';
+  let element = '';
 
   async function fetchClaims() {
     const token = localStorage.getItem('token');
@@ -36,9 +44,36 @@
     }
   }
 
+  async function fetchEmployees() {
+    const token = localStorage.getItem('token');
+    const res = await fetch('http://localhost:5000/api/employees', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      employees = await res.json();
+    }
+  }
+
+  async function fetchElements() {
+    const token = localStorage.getItem('token');
+    const res = await fetch('http://localhost:5000/api/elements', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      elements = await res.json();
+    }
+  }
+
   async function submitClaim() {
     const token = localStorage.getItem('token');
     if (!token) return goto('/login');
+
+    if (!selectedEmployee || !selectedElement) {
+      error = 'Please select an employee and element.';
+      return;
+    }
 
     try {
       const res = await fetch('http://localhost:5000/api/processor/claim', {
@@ -48,9 +83,11 @@
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-        amount,
-        description,
-        payDate,
+          amount,
+          description,
+          payDate,
+          employee: selectedEmployee,
+          element: selectedElement
         }),
       });
 
@@ -59,7 +96,9 @@
         amount = '';
         description = '';
         payDate = '';
-        fetchClaims(); // refresh list
+        selectedEmployee = '';
+        selectedElement = '';
+        fetchClaims();
       } else {
         error = 'Failed to submit claim.';
       }
@@ -68,7 +107,11 @@
     }
   }
 
-  onMount(fetchClaims);
+  onMount(async () => {
+    await fetchClaims();
+    await fetchEmployees();
+    await fetchElements();
+  });
 </script>
 
 <Menu />
@@ -91,22 +134,54 @@
 
       <form on:submit|preventDefault={submitClaim}>
 
-<div class="field">
-  <label class="label">Paydate</label>
-  <div class="control">
-    <input
-      class="input"
-      type="date"
-      bind:value={payDate}
-      required
-    />
-  </div>
-  <p class="help has-text-grey">
-    Date the reimbursement will be paid to employees
-  </p>
-</div>
+        <!-- Employee Dropdown -->
+        <div class="field">
+          <label class="label">Employee</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select bind:value={selectedEmployee} required>
+                <option value="">Select Employee</option>
+                {#each employees as emp}
+                  <option value={emp._id}>
+                    {emp.firstName} {emp.familyName}
+                  </option>
+                {/each}
+              </select>
+            </div>
+          </div>
+        </div>
 
+        <!-- Element Dropdown -->
+        <div class="field">
+          <label class="label">Expense Type</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select bind:value={selectedElement} required>
+                <option value="">Select Expense Type</option>
+                {#each elements as el}
+                  <option value={el._id}>
+                    {el.category}
+                  </option>
+                {/each}
+              </select>
+            </div>
+          </div>
+        </div>
 
+        <!-- Paydate -->
+        <div class="field">
+          <label class="label">Paydate</label>
+          <div class="control">
+            <input
+              class="input"
+              type="date"
+              bind:value={payDate}
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Description -->
         <div class="field">
           <label class="label">Description</label>
           <div class="control">
