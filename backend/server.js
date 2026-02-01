@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import submissionRoutes from "./routes/submissions.js";
+import employeeRoutes from "./routes/employees.js";
+import elementRoutes from "./routes/elements.js";
 
 // Route files
 import authRoutes from "./routes/auth.js";
@@ -21,6 +23,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/processor", processorRoutes);
 app.use("/api/submissions", submissionRoutes);
+app.use("/api/employees", employeeRoutes);
+app.use("/api/elements", elementRoutes);
 
 // Root endpoint (for testing API)
 app.get("/", (req, res) => res.send("ERR Expenses Web App API Running"));
