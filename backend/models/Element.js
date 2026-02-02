@@ -30,6 +30,12 @@ const elementSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+
+    // Only used for REMOTE_WORKING_DAILY_ALLOWANCE category
+    rate: {
+      type: Number,
+      required: false,
+    },
   },
   { timestamps: true },
 );

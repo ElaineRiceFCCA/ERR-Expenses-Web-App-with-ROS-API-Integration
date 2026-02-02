@@ -60,6 +60,14 @@ export async function generateERRSubmission(payDate) {
       lineItem.subCategory = celms.subCategory;
     }
 
+    // Remote Working requires number of days
+    if (celms.category === "REMOTE_WORKING_DAILY_ALLOWANCE") {
+      if (!claim.days) {
+        throw new Error("Remote working claim missing number of days");
+      }
+      lineItem.numberOfDays = claim.days.toString();
+    }
+
     // Employee identification
     if (empl.employeePpsn && empl.employmentID) {
       lineItem.employeeID = {

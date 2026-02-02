@@ -15,46 +15,55 @@ const elements = [
     category: "REMOTE_WORKING_DAILY_ALLOWANCE",
     subCategory: null,
     description: "Remote working daily allowance",
+    rate: 3.2,
   },
   {
     category: "SMALL_BENEFITS_EXEMPTION",
     subCategory: null,
     description: "Small benefits exemption",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "EATING_ON_SITE",
     description: "Eating on site",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "EMERGENCY_TRAVEL",
     description: "Emergency travel",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "SITE_BASED_EMPLOYEES",
     description: "Site-based employees travel",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "SUBSISTENCE_UNVOUCHED",
     description: "Subsistence unvouched",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "SUBSISTENCE_VOUCHED",
     description: "Subsistence vouched",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "TRAVEL_UNVOUCHED",
     description: "Travel unvouched",
+    rate: null,
   },
   {
     category: "TRAVEL_AND_SUBSISTENCE",
     subCategory: "TRAVEL_VOUCHED",
     description: "Travel vouched",
+    rate: null,
   },
 ];
 

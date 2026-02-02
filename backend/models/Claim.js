@@ -36,6 +36,11 @@ const claimSchema = new mongoose.Schema(
       ref: "Element",
       required: true,
     },
+
+    days: {
+      type: Number,
+      required: false,
+    },
   },
 
   // Timestamp (relevant for audit trail)

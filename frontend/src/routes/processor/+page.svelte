@@ -16,8 +16,11 @@
   let message = '';
   let error = '';
   let loading = true;
-  let employee = '';
-  let element = '';
+  let days = '';
+
+  $: isRemoteWorking =
+    elements.find((e) => e._id === selectedElement)?.category ===
+    'REMOTE_WORKING_DAILY_ALLOWANCE';
 
   async function fetchClaims() {
     const token = localStorage.getItem('token');
@@ -93,11 +96,12 @@
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          amount,
+          amount: isRemoteWorking ? undefined : amount,
+          days: isRemoteWorking ? Number(days) : undefined,
           description,
           payDate,
           employee: selectedEmployee,
-          element: selectedElement
+          element: selectedElement,
         }),
       });
 
@@ -106,6 +110,7 @@
         amount = '';
         description = '';
         payDate = '';
+        days = '';
         selectedEmployee = '';
         selectedElement = '';
         fetchClaims();
@@ -143,128 +148,107 @@
       <h2 class="subtitle has-text-weight-semibold mb-3">New Claim</h2>
 
       <form on:submit|preventDefault={submitClaim}>
-
+        
         <!-- Employee Dropdown -->
         <div class="field">
-          <label class="label">Employee</label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select bind:value={selectedEmployee} required>
-                <option value="">Select Employee</option>
-                {#each employees as emp}
-                  <option value={emp._id}>
-                    {emp.firstName} {emp.familyName}
-                  </option>
-                {/each}
-              </select>
-            </div>
+          <label class="label" for="employee">Employee</label>
+          <div class="select is-fullwidth">
+            <select bind:value={selectedEmployee} required>
+              <option value="">Select Employee</option>
+              {#each employees as emp}
+                <option value={emp._id}>
+                  {emp.firstName} {emp.familyName}
+                </option>
+              {/each}
+            </select>
           </div>
         </div>
 
         <!-- Element Dropdown -->
         <div class="field">
-          <label class="label">Expense Type</label>
-          <div class="control">
-            <div class="select is-fullwidth">
-              <select bind:value={selectedElement} required>
-                <option value="">Select Expense Type</option>
-                {#each elements as el}
-                  <option value={el._id}>
-                   {el.category}
-                   {el.subCategory ? ` – ${el.subCategory}` : ""}
+          <label class="label" for="element">Expense Type</label>
+          <div class="select is-fullwidth">
+            <select bind:value={selectedElement} required>
+              <option value="">Select Expense Type</option>
+              {#each elements as el}
+                <option value={el._id}>
+                  {el.category}
+                  {el.subCategory ? ` – ${el.subCategory}` : ""}
                 </option>
-                {/each}
-              </select>
-            </div>
+              {/each}
+            </select>
           </div>
         </div>
 
-        <!-- Paydate -->
-        <div class="field">
-          <label class="label">Paydate</label>
-          <div class="control">
-            <input
-              class="input"
-              type="date"
-              bind:value={payDate}
-              required
+        <!-- Days -->
+        {#if isRemoteWorking}
+          <div class="field">
+            <label class="label" for="days">Days</label>
+            <input 
+            class="input" 
+            type="number" 
+            bind:value={days} 
+            required 
             />
           </div>
+        {:else}
+          <div class="field">
+            <label class="label" for="amount">Amount (€)</label>
+            <input class="input" type="number" step="0.01" bind:value={amount} required />
+          </div>
+        {/if}
+
+        <!-- Paydate -->
+        <div class="field">
+          <label class="label" for="payDate">Paydate</label>
+          <input class="input" 
+          type="date" bind:value={payDate} 
+          required 
+          />
         </div>
 
         <!-- Description -->
         <div class="field">
-          <label class="label">Description</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              bind:value={description}
-              placeholder="e.g. Travel expenses, accommodation..."
-              required
-            />
-          </div>
+          <label class="label" for="description">Description / Notes</label>
+          <input 
+          class="input" 
+          type="text" bind:value={description} 
+          required 
+          />
         </div>
 
-        <div class="field">
-          <label class="label">Amount (€)</label>
-          <div class="control">
-            <input
-              class="input"
-              type="number"
-              step="0.01"
-              bind:value={amount}
-              placeholder="Enter amount"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="field mt-4">
-          <div class="control">
-            <button class="button sdw-button" type="submit">Add Claim</button>
-          </div>
-        </div>
+        <button class="button sdw-button mt-4" type="submit">Add Claim</button>
       </form>
     </div>
 
-    <!-- Claims Table -->
     <div class="sdw-box">
-      <h2 class="subtitle has-text-weight-semibold mb-3">Claims for Submission</h2>
+      <h2 class="subtitle has-text-weight-semibold mb-3">Pending Claims for Submission</h2>
 
       {#if loading}
-        <progress class="progress is-small is-primary" max="100">Loading...</progress>
-      {:else if claims.length === 0}
-        <p class="has-text-grey">No claims added yet.</p>
+        <progress class="progress is-small is-primary" max="100"></progress>
+        <label class="label" for="employee">Employee</label>
       {:else}
         <table class="sdw-table">
           <thead>
             <tr>
-              <th>Pay date</th>
-              <th>Expense Description</th>
+              <th>Paydate</th>
+              <th>Employee</th>
+              <th>Expense Type</th>
               <th>Days</th>
               <th>Amount (€)</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
             {#each claims as claim}
               <tr>
                 <td>{new Date(claim.payDate).toLocaleDateString()}</td>
-                <!-- <td>{new Date(claim.createdAt).toLocaleDateString()}</td> -->
-                <td>{claim.description}</td>
-                <td>"Days TODO"</td>
-                <td>{claim.amount}</td>
+                <td>{claim.employee.firstName} {claim.employee.familyName}</td>
                 <td>
-                  <span
-                    class="tag is-rounded"
-                    class:is-warning={claim.status === 'Pending'}
-                    class:is-success={claim.status === 'Generated' || claim.status === 'Submitted'}
-                    class:is-danger={claim.status === 'Rejected'}
-                  >
-                    {claim.status || 'Pending'}
-                  </span>
+                  {claim.element.category}
+                  {claim.element.subCategory ? ` / ${claim.element.subCategory}` : ''}
                 </td>
+                <td>{claim.days ?? '-'}</td>
+                <td>{claim.amount.toFixed(2)}</td>
               </tr>
             {/each}
           </tbody>
@@ -273,5 +257,3 @@
     </div>
   </div>
 </section>
-
-
