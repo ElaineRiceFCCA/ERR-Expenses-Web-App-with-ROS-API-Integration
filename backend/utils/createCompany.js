@@ -11,7 +11,7 @@ dotenv.config();
 await connectDB();
 
 const company = {
-  employerRegistrationNumber: "9027637HH",
+  employerRegistrationNumber: "9027650WH",
   payrollReference: "ERI4",
   taxYear: 2025,
   softwareUsed: "ERRExpenseManagementSystem",

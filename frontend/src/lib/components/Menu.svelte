@@ -24,7 +24,7 @@
   // Admin-only navigation
   const adminLinks = [
     { id: 'processing', href: '/processor', label: 'Processing' },
-    { id: 'config', href: '/admin/config', label: 'Config' },
+    { id: 'revenue', href: '/admin/Revenue', label: 'Revenue' },
     { id: 'reports', href: '/admin/reports', label: 'Reports' }
   ];
 
