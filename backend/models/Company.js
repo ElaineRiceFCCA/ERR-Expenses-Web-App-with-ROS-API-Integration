@@ -32,6 +32,21 @@ const companySchema = new mongoose.Schema(
       default: "0.01.0.0001",
     },
 
+    //ROS configuration
+    rosCertPath: {
+      type: String,
+      required: true,
+    },
+
+    rosCertPassword: {
+      type: String,
+      required: true,
+    },
+
+    agentTain: {
+      type: String,
+    },
+
     // Control flag (future-proofing)
     active: {
       type: Boolean,

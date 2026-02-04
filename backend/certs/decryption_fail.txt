@@ -1,0 +1,27 @@
+// API call
+{
+    "message": "Revenue handshake failed",
+    "error": "Failed to load Revenue certificate: error:1E08010C:DECODER routines::unsupported"
+}
+
+
+// Decryption failed message
+gpgsm: decryption failed; trying charset 'ISO-8859-1'
+gpgsm: decryption failed; trying charset 'ISO-8859-15'
+gpgsm: decryption failed; trying charset 'ISO-8859-2'
+gpgsm: decryption failed; trying charset 'ISO-8859-3'
+gpgsm: decryption failed; trying charset 'ISO-8859-4'
+gpgsm: decryption failed; trying charset 'ISO-8859-5'
+gpgsm: decryption failed; trying charset 'ISO-8859-6'
+gpgsm: decryption failed; trying charset 'ISO-8859-7'
+gpgsm: decryption failed; trying charset 'ISO-8859-8'
+gpgsm: decryption failed; trying charset 'ISO-8859-9'
+gpgsm: decryption failed; trying charset 'KOI8-R'
+gpgsm: decryption failed; trying charset 'IBM437'
+gpgsm: decryption failed; trying charset 'IBM850'
+gpgsm: decryption failed; trying charset 'BIG5'
+gpgsm: parse_shrouded_key_bag(shrouded_key_bag.3desoraes-ciphertext): lvl=4 (tlv_expect_octet_string): Success - Decryption failed
+gpgsm: parse_bag_data(data.oid): lvl=4 (tlv_expect_octet_string): Success - Decryption failed
+gpgsm: p12_parse(bag.data): @0000 lvl=0 : tlv parser not yet initialized - Decryption failed
+gpgsm: error parsing or decrypting the PKCS#12 file
+gpgsm: total number processed: 0

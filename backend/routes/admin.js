@@ -6,6 +6,8 @@ import {
   updateUserRole,
   deleteUser,
 } from "../controllers/userController.js";
+import { performRevenueHandshake } from "../services/revenueHandshake.js";
+import Company from "../models/Company.js";
 
 const router = express.Router();
 
@@ -20,6 +22,35 @@ router.get("/dashboard", protect, adminOnly, async (req, res) => {
       "/api/admin/users/:id (PUT/DELETE)",
     ],
   });
+});
+
+// ----------------------------------------------------
+// POST /api/admin/revenue/handshake
+// Tests ROS connectivity using company certificate
+// ----------------------------------------------------
+router.post("/revenue/handshake", protect, adminOnly, async (req, res) => {
+  try {
+    const company = await Company.findOne({ active: true });
+
+    if (!company) {
+      return res.status(400).json({
+        message: "No active company configuration found",
+      });
+    }
+
+    const result = await performRevenueHandshake(company);
+
+    res.json({
+      message: "Revenue handshake completed",
+      status: result.status,
+      response: result.body,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "Revenue handshake failed",
+      error: err.message,
+    });
+  }
 });
 
 // CRUD endpoints
