@@ -1,6 +1,15 @@
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+// Health check
+app.MapGet("/health", () =>
+{
+    return Results.Ok(new
+    {
+        service = "Revenue Signing Service",
+        status = "Running",
+        timestamp = DateTime.UtcNow
+    });
+});
 
 app.Run();
