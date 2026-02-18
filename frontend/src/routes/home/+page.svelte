@@ -1,4 +1,13 @@
 <script lang="ts">
+  import { redirect } from '@sveltejs/kit';
+
+export const load = () => {
+	throw redirect(
+		302,
+		'https://www.sdworx.ie/en-ie/solutions/payroll-reward/payroll-services/outsourced-payroll-services'
+	);
+};
+
 </script>
 
 <section class="hero is-fullheight-with-navbar landing-hero">
@@ -48,7 +57,7 @@
               <div class="column is-6">
                 <div class="feature">
                   <p class="feature-title">ROS API integration</p>
-                  <p class="feature-text">Built to connect with your backend services.</p>
+                  <p class="feature-text">Built to establish a secure communication with ROS.</p>
                 </div>
               </div>
             </div>
@@ -61,7 +70,8 @@
 
               </div>
               <div class="level-right">
-                <a class="is-size-7" href="/about">About</a>
+                <a class="is-size-7" href="https://www.sdworx.ie/en-ie/solutions/payroll-reward/payroll-services/outsourced-payroll-services"target="_blank"
+  rel="noopener noreferrer">About</a>
               </div>
             </div>
           </div>
