@@ -15,7 +15,7 @@
     if (role !== 'admin') return goto('/processor');
 
     try {
-      const res = await fetch('http://localhost:5000/api/admin/users', {
+      const res = await fetch('http://localhost:5500/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
 

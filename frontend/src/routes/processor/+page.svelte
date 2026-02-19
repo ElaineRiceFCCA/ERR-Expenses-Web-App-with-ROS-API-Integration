@@ -30,7 +30,7 @@
     if (role !== 'processor' && role !== 'admin') return goto('/admin');
 
     try {
-      const res = await fetch('http://localhost:5000/api/processor/claims', {
+      const res = await fetch('http://localhost:5500/api/processor/claims', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -51,7 +51,7 @@
   const token = localStorage.getItem('token');
 
   try {
-    const res = await fetch('http://localhost:5000/api/employees', {
+    const res = await fetch('http://localhost:5500/api/employees', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -70,7 +70,7 @@
 
   async function fetchElements() {
     const token = localStorage.getItem('token');
-    const res = await fetch('http://localhost:5000/api/elements', {
+    const res = await fetch('http://localhost:5500/api/elements', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -89,7 +89,7 @@
     }
 
     try {
-      const res = await fetch('http://localhost:5000/api/processor/claim', {
+      const res = await fetch('http://localhost:5500/api/processor/claim', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

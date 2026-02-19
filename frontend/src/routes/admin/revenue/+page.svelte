@@ -25,7 +25,7 @@
     try {
       const token = localStorage.getItem('token');
 
-      const res = await fetch('http://localhost:5000/api/revenue/handshake', {
+      const res = await fetch('http://localhost:5500/api/revenue/handshake', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,

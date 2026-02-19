@@ -90,7 +90,7 @@ npm install
 ```
 MONGO_URI=mongodb://localhost:27017/err-expenses
 JWT_SECRET=your_secret_key
-PORT=5000
+PORT=5500
 ```
 
 ### Start the backend server:

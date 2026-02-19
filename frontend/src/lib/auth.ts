@@ -12,7 +12,7 @@ export async function login(
 ): Promise<LoginResponse | null> {
   try {
     // Backend API endpoint
-    const res = await fetch("http://localhost:5000/api/auth/login", {
+    const res = await fetch("http://localhost:5500/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
