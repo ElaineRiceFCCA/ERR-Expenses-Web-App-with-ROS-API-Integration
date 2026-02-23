@@ -53,7 +53,7 @@ export async function generateERRSubmission(payDate) {
       lineItemID: `${submissionID}-${index + 1}`,
       category: celms.category,
       paymentDate: claim.payDate.toISOString().slice(0, 10),
-      amount: claim.amount.toFixed(2),
+      amount: Number(claim.amount.toFixed(2)),
     };
 
     if (celms.subCategory) {
@@ -65,7 +65,7 @@ export async function generateERRSubmission(payDate) {
       if (!claim.days) {
         throw new Error("Remote working claim missing number of days");
       }
-      lineItem.numberOfDays = claim.days.toString();
+      lineItem.numberOfDays = claim.days;
     }
 
     // Employee identification
@@ -93,21 +93,7 @@ export async function generateERRSubmission(payDate) {
     return lineItem;
   });
 
-  // 5. Assemble final submission
-  const submission = {
-    enhancedReportingRunReference,
-    submissionID,
-    requestBody: {
-      requestType: "EnhancedReportingSubmission",
-      employerRegistrationNumber: company.employerRegistrationNumber,
-      taxYear: company.taxYear,
-      softwareUsed: company.softwareUsed,
-      softwareVersion: company.softwareVersion,
-      expensesBenefits,
-    },
-  };
-
-  // 6. Write JSON to disk
+  // 5. Write JSON to disk
   const exportDir = path.resolve("exports");
   if (!fs.existsSync(exportDir)) {
     fs.mkdirSync(exportDir, { recursive: true });
@@ -116,5 +102,12 @@ export async function generateERRSubmission(payDate) {
   const filePath = path.join(exportDir, `${submissionID}.json`);
   fs.writeFileSync(filePath, JSON.stringify(submission, null, 2));
 
-  return submission;
+  // 6. Assemble final submission
+  return {
+    enhancedReportingRunReference,
+    submissionID,
+    body: {
+      expensesBenefits,
+    },
+  };
 }
