@@ -56,6 +56,7 @@ using (var md5 = MD5.Create())
 // =======================================================
 
 X509Certificate2? certificate = null;
+string? certBase64 = null;
 
 try
 {
@@ -74,6 +75,9 @@ try
         X509KeyStorageFlags.MachineKeySet |
         X509KeyStorageFlags.Exportable
     );
+
+    byte[] certBytes = certificate.Export(X509ContentType.Cert);
+    certBase64 = Convert.ToBase64String(certBytes);
 
     Console.WriteLine("Certificate loaded successfully.");
 }
@@ -118,13 +122,14 @@ app.MapGet("/cert-info", () =>
     if (certificate == null)
         return Results.Problem("Certificate not loaded");
 
-    return Results.Ok(new
+    return Results.Json(new
     {
-        Subject = certificate.Subject,
-        Issuer = certificate.Issuer,
-        NotBefore = certificate.NotBefore,
-        NotAfter = certificate.NotAfter,
-        Thumbprint = certificate.Thumbprint
+        subject = certificate.Subject,
+        issuer = certificate.Issuer,
+        notBefore = certificate.NotBefore,
+        notAfter = certificate.NotAfter,
+        thumbprint = certificate.Thumbprint,
+        base64 = certBase64
     });
 });
 
