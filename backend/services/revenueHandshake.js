@@ -21,13 +21,6 @@ export async function performRevenueHandshake(company) {
     `host: ${host}\n` +
     `date: ${date}`;
 
-  console.log("----- DEBUG: SIGNING STRING -----");
-  console.log(signingString);
-  console.log("----- DEBUG: DATE HEADER -----");
-  console.log(date);
-  console.log("----- DEBUG: PATH AND QUERY -----");
-  console.log(pathAndQuery);
-
   const signResponse = await fetch("http://localhost:5086/sign", {
     method: "POST",
     headers: { "Content-Type": "text/plain" },
