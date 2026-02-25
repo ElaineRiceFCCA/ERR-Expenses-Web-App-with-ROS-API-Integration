@@ -9,7 +9,8 @@ export async function performRevenueHandshake(company) {
   const query = new URLSearchParams({
     softwareUsed: company.softwareUsed,
     softwareVersion: company.softwareVersion,
-    employerRegistrationNumber: "01536466V",
+    employerRegistrationNumber: "8031508KH",
+    agentTain: "88502T",
   }).toString();
 
   const pathAndQuery = `${basePath}/handshake?${query}`;

@@ -8,6 +8,10 @@
   let error: string | null = null;
   let statusCode: number | null = null;
 
+  // Signing service runs on another port
+  const SIGNING_BASE = 'http://localhost:5086';
+  const NODE_BASE = 'http://localhost:5500';
+
   onMount(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -16,16 +20,45 @@
     if (role !== 'admin') goto('/processor');
   });
 
-  async function runHandshake() {
+  function resetState() {
     loading = true;
     result = null;
     error = null;
     statusCode = null;
+  }
+
+  async function handleResponse(res: Response) {
+    statusCode = res.status;
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      data = await res.text();
+    }
+
+    if (!res.ok) {
+      error = data?.error || data || 'Request failed';
+    } else {
+      result =
+        typeof data === 'string'
+          ? data
+          : JSON.stringify(data, null, 2);
+    }
+
+    loading = false;
+  }
+
+  // ============================
+  // NODE BACKEND HANDSHAKE
+  // ============================
+  async function runHandshake() {
+    resetState();
 
     try {
       const token = localStorage.getItem('token');
 
-      const res = await fetch('http://localhost:5500/api/revenue/handshake', {
+      const res = await fetch(`${NODE_BASE}/api/revenue/handshake`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -33,18 +66,61 @@
         }
       });
 
-      statusCode = res.status;
+      await handleResponse(res);
+    } catch {
+      error = 'Network error contacting backend';
+      loading = false;
+    }
+  }
 
-      const data = await res.json();
+  // ============================
+  // SIGNING SERVICE HEALTH
+  // ============================
+  async function checkHealth() {
+    resetState();
 
-      if (!res.ok) {
-        error = data.error || 'Handshake failed';
-      } else {
-        result = data.response || 'Handshake successful';
-      }
-    } catch (err) {
-      error = 'Network error contacting Revenue API';
-    } finally {
+    try {
+      const res = await fetch(`${SIGNING_BASE}/health`);
+      await handleResponse(res);
+    } catch {
+      error = 'Cannot reach signing service';
+      loading = false;
+    }
+  }
+
+  // ============================
+  // CERT INFO
+  // ============================
+  async function getCertInfo() {
+    resetState();
+
+    try {
+      const res = await fetch(`${SIGNING_BASE}/cert-info`);
+      await handleResponse(res);
+    } catch {
+      error = 'Cannot retrieve certificate info';
+      loading = false;
+    }
+  }
+
+  // ============================
+  // SIGN TEST DATA
+  // ============================
+  async function signTestData() {
+    resetState();
+
+    try {
+      const res = await fetch(`${SIGNING_BASE}/sign`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain'
+        },
+        body: 'TEST-DATA-FOR-SIGNING'
+      });
+
+      await handleResponse(res);
+    } catch {
+      error = 'Signing request failed';
       loading = false;
     }
   }
@@ -59,42 +135,75 @@
     </h1>
 
     <div class="sdw-box">
+
       <p class="mb-4">
-        This action tests the connection to Revenue ROS using the configured
-        X.509 certificate and HTTP signature mechanism.
+        Test Revenue signing service and backend integration.
       </p>
 
-      <button
-        class="button sdw-button"
-        disabled={loading}
-        on:click={runHandshake}
-      >
-        {#if loading}
-          Connecting to Revenue…
-        {:else}
-          Test Revenue Connection
-        {/if}
-      </button>
+      <!-- BUTTON GRID -->
+      <div class="buttons mb-4">
+
+        <button
+          class="button is-link sdw-button"
+          disabled={loading}
+          on:click={runHandshake}
+        >
+          Handshake
+        </button>
+
+        <button
+          class="button is-info sdw-button"
+          disabled={loading}
+          on:click={checkHealth}
+        >
+          Health Check
+        </button>
+
+        <button
+          class="button is-warning sdw-button"
+          disabled={loading}
+          on:click={getCertInfo}
+        >
+          Certificate Info
+        </button>
+
+        <button
+          class="button is-primary sdw-button"
+          disabled={loading}
+          on:click={signTestData}
+        >
+          Sign Test Data
+        </button>
+
+      </div>
+
+      <!-- STATUS -->
+      {#if loading}
+        <p class="has-text-grey">Processing request...</p>
+      {/if}
 
       {#if statusCode !== null}
-        <p class="mt-4 has-text-grey">
+        <p class="mt-2 has-text-grey">
           HTTP Status: <strong>{statusCode}</strong>
         </p>
       {/if}
 
+      <!-- SUCCESS -->
       {#if result}
         <div class="notification is-success mt-4">
-          <strong>Success</strong>
+          <strong>Response</strong>
           <pre class="mt-2">{result}</pre>
         </div>
       {/if}
 
+      <!-- ERROR -->
       {#if error}
         <div class="notification is-danger mt-4">
           <strong>Error</strong>
           <p>{error}</p>
         </div>
       {/if}
+
     </div>
   </div>
 </section>

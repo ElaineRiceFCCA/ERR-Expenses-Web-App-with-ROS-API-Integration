@@ -17,16 +17,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const company = {
-  employerRegistrationNumber: "01536466V",
+  employerRegistrationNumber: "8031508KH",
   payrollReference: "ERI4",
   taxYear: 2025,
   softwareUsed: "ERRExpenseManagementSystem",
   softwareVersion: "0.01.0.0001",
 
   // ROS certificate configuration (PIT test cert details)
-  rosCertPath: path.join(__dirname, "..", "certs", "01536466V.p12"),
-  rosCertPassword: "Itptest1",
-  agentTain: null,
+  rosCertPath: path.join(__dirname, "..", "certs", "999966377.p12"),
+  rosCertPassword: "d301b398",
+  agentTain: "88502T",
   active: true,
 };
 

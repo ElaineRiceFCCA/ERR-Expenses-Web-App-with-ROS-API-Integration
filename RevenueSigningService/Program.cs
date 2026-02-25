@@ -19,7 +19,20 @@ using System.Text;
 */
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+app.UseCors("AllowFrontend");
 
 
 // =======================================================
@@ -30,14 +43,14 @@ var app = builder.Build();
 string certPath = Path.Combine(
     Directory.GetCurrentDirectory(),
     "certs",
-    "01536466V.p12"
+    "999966377.p12"
 );
 
 // Revenue specification states:
 // For web service usage, password must be:
 // Base64( MD5( plainPassword ) )
 
-string plainPassword = "Itptest1";
+string plainPassword = "d301b398";
 string hashedPassword;
 
 // Generate Base64(MD5(password))
