@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
 
+// Represents an employee included in ERR submissions.
+// Supports both PPSN-known and PPSN-unknown reporting scenarios.
 const employeeSchema = new mongoose.Schema(
   {
-    // --- Common fields ---
+    // Core identity fields
     firstName: {
       type: String,
       required: true,
@@ -13,18 +15,21 @@ const employeeSchema = new mongoose.Schema(
       required: true,
     },
 
-    // --- PPSN known ---
+    // PPSN known scenario
+    // Internal employment identifier
     employmentID: {
       type: String,
       required: true,
     },
 
+    // PPSN (optional depending on reporting scenario)
     employeePpsn: {
       type: String,
       required: false,
     },
 
-    // --- PPSN unknown ---
+    // PPSN unknown scenario
+    // Employer-assigned reference (used when PPSN unavailable)
     employerReference: {
       type: String,
       required: true,
@@ -35,6 +40,7 @@ const employeeSchema = new mongoose.Schema(
       required: true,
     },
 
+    // Structured address object (required for PPSN-unknown submissions)
     address: {
       line1: { type: String, required: true },
       line2: { type: String, required: false },
@@ -43,12 +49,15 @@ const employeeSchema = new mongoose.Schema(
       country: { type: String, required: true, default: "IE" },
     },
 
-    // --- Status ---
+    // Soft enable/disable flag
     active: {
       type: Boolean,
       default: true,
     },
   },
+
+  // Automatically stores createdAt and updatedAt
+  // Supports auditability and submission traceability
   { timestamps: true },
 );
 

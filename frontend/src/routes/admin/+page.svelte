@@ -3,14 +3,17 @@
   import { goto } from '$app/navigation';
   import Menu from '$lib/components/Menu.svelte';
 
+  // Component state
   let users: any[] = [];
   let loading = true;
   let error = '';
 
+  // Fetch all users (admin-only endpoint)
   async function fetchUsers() {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
 
+    // Enforce authentication + RBAC
     if (!token) return goto('/login');
     if (role !== 'admin') return goto('/processor');
 
@@ -32,9 +35,11 @@
     }
   }
 
+  // Trigger data load on page mount
   onMount(fetchUsers);
 </script>
 
+<!-- Global navigation -->
 <Menu />
 
 <section class="section admin-dashboard">
@@ -42,16 +47,20 @@
     <h1 class="title has-text-weight-semibold mb-2">User Management</h1>
 
     {#if loading}
+    <!-- Loading indicator -->
       <progress class="progress is-small is-primary" max="100">Loading...</progress>
     {:else if error}
+    <!-- Error display -->
       <div class="notification is-danger">{error}</div>
     {:else}
+    <!-- User management table -->
       <div class="sdw-box">
         <div class="level mb-4">
           <div class="level-left">
             <p class="has-text-weight-semibold is-size-5">User Accounts</p>
           </div>
           <div class="level-right">
+          <!-- Placeholder for future create-user feature -->
             <button class="button sdw-button" on:click={() => alert('Add user feature coming soon')}>
               + Add User
             </button>
@@ -73,6 +82,8 @@
               <tr>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+
+                <!-- Role badge -->
                 <td>
                   <span
                     class="tag is-rounded"
@@ -82,6 +93,8 @@
                     {user.role}
                   </span>
                 </td>
+
+                <!-- Active/Inactive indicator -->
                 <td>
                   <span
                     class="tag is-rounded"
@@ -91,6 +104,8 @@
                     {user.active === false ? 'Inactive' : 'Active'}
                   </span>
                 </td>
+
+                <!-- Placeholder action buttons -->
                 <td>
                   <div class="buttons are-small">
                     <button

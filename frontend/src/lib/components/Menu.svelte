@@ -6,29 +6,33 @@
   import Brand from './Brand.svelte';
   import Navbar from './Navbar.svelte';
 
+  // Reactive store: current route path
   const currentPath = derived(page, ($page) => $page.url.pathname);
 
+  // Local session state (loaded from localStorage)
   let userName: string | null = null;
   let role: 'admin' | 'processor' | null = null;
 
+  // Load user context on client mount
   onMount(() => {
     userName = localStorage.getItem('user');
     role = localStorage.getItem('role') as 'admin' | 'processor';
   });
 
+  // Clears session and redirects to login
   function logout() {
     localStorage.clear();
     goto('/login');
   }
 
-  // Admin-only navigation
+  // Navigation configuration: Admin role
   const adminLinks = [
     { id: 'processing', href: '/processor', label: 'Processing' },
     { id: 'revenue', href: '/admin/revenue', label: 'Revenue' },
     { id: 'reports', href: '/admin/reports', label: 'Reports' }
   ];
 
-  // Processor navigation
+  // Navigation configuration: Processor role
   const processorLinks = [
     { id: 'employees', href: '/processor/employees', label: 'Employees' },
     { id: 'elements', href: '/processor/elements', label: 'Elements' },
@@ -49,7 +53,7 @@
 
     <nav class="sdw-nav-links">
 
-      <!-- ADMIN on ADMIN routes -->
+      <!-- Admin navigation (only when not inside processor route) -->
       {#if role === 'admin' && !isProcessorRoute}
         {#each adminLinks as link}
           <a
@@ -61,7 +65,7 @@
         {/each}
       {/if}
 
-      <!-- PROCESSOR routes (processor OR admin acting as processor) -->
+      <!-- Processor navigation (processor OR admin acting as processor) -->
       {#if isProcessorRoute && (role === 'processor' || role === 'admin')}
         {#each processorLinks as link}
           <a
@@ -72,7 +76,7 @@
           </a>
         {/each}
 
-        <!-- Admin shortcut -->
+        <!-- Admin shortcut when inside processor area -->
         {#if role === 'admin'}
           <a href="/admin" class="sdw-nav-button is-admin">
             Admin
@@ -80,11 +84,12 @@
         {/if}
       {/if}
 
-      <!-- LOGOUT -->
+      <!-- Logout control -->
       <button class="button sdw-button" on:click={logout}>Logout</button>
     </nav>
   </div>
 
+  <!-- Display current logged-in user -->
   {#if userName}
     <p class="sdw-user-label">
       <strong>Logged in:</strong> {userName}

@@ -1,6 +1,7 @@
 // ----------------------------------------------------
-// Creates new employee table / fields in DB
-// Run with: node utils/createEmployee.js from root backend directory
+// Utility: Seeds Employee records for ERR testing
+// Includes both PPSN-known and PPSN-unknown scenarios
+// Run with: node utils/createEmployees.js
 // ----------------------------------------------------
 
 import dotenv from "dotenv";
@@ -8,10 +9,11 @@ import Employee from "../models/Employee.js";
 import connectDB from "../config/db.js";
 
 dotenv.config();
-await connectDB();
+await connectDB(); // Establish MongoDB connection
 
+// Sample employees for PIT testing
 const employees = [
-  // Employee with PPSN
+  // PPSN known employee (standard submission structure)
   {
     firstName: "Jane",
     familyName: "Blogs",
@@ -27,7 +29,7 @@ const employees = [
     },
   },
 
-  // Employee without PPSN
+  // PPSN unknown employee (requires DOB + address in submission)
   {
     firstName: "Joe",
     familyName: "Blogs",
@@ -45,11 +47,12 @@ const employees = [
 
 async function createEmployees() {
   try {
-    // Clear existing seed employees
+    // Remove existing seed entries (POC reset strategy)
     await Employee.deleteMany({
       firstName: { $in: ["Jane", "Joe"] },
     });
 
+    // Insert predefined employees
     for (const emp of employees) {
       const newEmp = await Employee.create(emp);
       console.log(`Created employee: ${newEmp.firstName} ${newEmp.familyName}`);

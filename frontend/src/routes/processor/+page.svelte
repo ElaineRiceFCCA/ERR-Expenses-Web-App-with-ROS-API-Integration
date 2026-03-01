@@ -3,25 +3,30 @@
   import { goto } from '$app/navigation';
   import Menu from '$lib/components/Menu.svelte';
 
+  // Data collections
   let claims: any[] = [];
   let employees: any[] = [];
   let elements: any[] = [];
 
+  // Form state
   let selectedEmployee = '';
   let selectedElement = '';
-
   let amount = '';
   let description = '';
   let payDate = '';
+  let days = '';
+
+  // UI state
   let message = '';
   let error = '';
   let loading = true;
-  let days = '';
 
+  // Reactive: determines if selected element is remote working
   $: isRemoteWorking =
     elements.find((e) => e._id === selectedElement)?.category ===
     'REMOTE_WORKING_DAILY_ALLOWANCE';
 
+  // Fetch pending claims (processor + admin allowed)
   async function fetchClaims() {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -47,6 +52,7 @@
     }
   }
 
+  // Fetch employee reference data
   async function fetchEmployees() {
   const token = localStorage.getItem('token');
 
@@ -68,6 +74,7 @@
   }
 }
 
+  // Fetch element reference data
   async function fetchElements() {
     const token = localStorage.getItem('token');
     const res = await fetch('http://localhost:5500/api/elements', {
@@ -79,6 +86,7 @@
     }
   }
 
+  // Submit new claim to backend
   async function submitClaim() {
     const token = localStorage.getItem('token');
     if (!token) return goto('/login');
@@ -122,6 +130,7 @@
     }
   }
 
+  // Initial page load
   onMount(async () => {
     await fetchClaims();
     await fetchEmployees();
@@ -143,13 +152,13 @@
       <div class="notification is-success">{message}</div>
     {/if}
 
-    <!-- Claim Form -->
+    <!-- New Claim Form -->
     <div class="sdw-box mb-5">
       <h2 class="subtitle has-text-weight-semibold mb-3">New Claim</h2>
 
       <form on:submit|preventDefault={submitClaim}>
         
-        <!-- Employee Dropdown -->
+        <!-- Employee selection -->
         <div class="field">
           <label class="label" for="employee">Employee</label>
           <div class="select is-fullwidth">
@@ -164,7 +173,7 @@
           </div>
         </div>
 
-        <!-- Element Dropdown -->
+        <!-- Element selection -->
         <div class="field">
           <label class="label" for="element">Expense Type</label>
           <div class="select is-fullwidth">
@@ -180,7 +189,7 @@
           </div>
         </div>
 
-        <!-- Days -->
+        <!-- Conditional days / amount input -->
         {#if isRemoteWorking}
           <div class="field">
             <label class="label" for="days">Days</label>
@@ -221,6 +230,7 @@
       </form>
     </div>
 
+    <!-- Pending Claims Table -->
     <div class="sdw-box">
       <h2 class="subtitle has-text-weight-semibold mb-3">Pending Claims for Submission</h2>
 

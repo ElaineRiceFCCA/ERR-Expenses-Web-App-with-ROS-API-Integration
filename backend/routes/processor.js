@@ -5,15 +5,21 @@ import Element from "../models/Element.js";
 
 const router = express.Router();
 
-// Submit a new expense claim
+// ----------------------------------------------------
+// POST /api/processor/claim
+// Creates a new expense claim (processor role)
+// Applies category-specific validation and calculation
+// ----------------------------------------------------
 router.post("/claim", protect, async (req, res) => {
   try {
     const { description, payDate, employee, element, days, amount } = req.body;
 
+    // payDate is mandatory for ERR period grouping
     if (!payDate) {
       return res.status(400).json({ message: "paydate is required" });
     }
 
+    // Validate referenced reporting element
     const el = await Element.findById(element);
     if (!el) {
       return res.status(400).json({ message: "Invalid element" });
@@ -21,6 +27,8 @@ router.post("/claim", protect, async (req, res) => {
 
     let finalAmount = amount;
 
+    // Category-specific logic:
+    // REMOTE_WORKING_DAILY_ALLOWANCE = days * predefined rate
     if (el.category === "REMOTE_WORKING_DAILY_ALLOWANCE") {
       if (!days) {
         return res.status(400).json({ message: "Days required" });
@@ -28,6 +36,7 @@ router.post("/claim", protect, async (req, res) => {
       finalAmount = days * el.rate;
     }
 
+    // Persist claim with processor reference
     const claim = await Claim.create({
       processor: req.user._id,
       employee,
@@ -46,12 +55,15 @@ router.post("/claim", protect, async (req, res) => {
   }
 });
 
-// Get all pending claims
+// ----------------------------------------------------
+// GET /api/processor/claims
+// Returns all pending claims for ERR generation
+// ----------------------------------------------------
 router.get("/claims", protect, async (req, res) => {
   try {
     const claims = await Claim.find({ status: "pending" })
-      .populate("employee")
-      .populate("element")
+      .populate("employee") // Required for PPSN logic
+      .populate("element") // Required for category mapping
       .sort({ payDate: 1 });
 
     res.json(claims);

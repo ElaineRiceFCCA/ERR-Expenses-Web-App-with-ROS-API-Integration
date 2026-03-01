@@ -1,25 +1,29 @@
 import mongoose from "mongoose";
 
+// Stores organisation-level configuration required
+// for ERR generation and ROS submission
 const companySchema = new mongoose.Schema(
   {
-    // Revenue required identifiers
+    // Revenue employer identifier (unique per organisation)
     employerRegistrationNumber: {
       type: String,
       required: true,
       unique: true,
     },
 
+    // Payroll reference used in ERR run identifiers
     payrollReference: {
       type: String,
       required: true,
     },
 
+    // Reporting tax year (used in submission metadata)
     taxYear: {
       type: Number,
       required: true,
     },
 
-    // Software identifiers
+    // Software metadata required by Revenue specifications
     softwareUsed: {
       type: String,
       required: true,
@@ -32,7 +36,8 @@ const companySchema = new mongoose.Schema(
       default: "0.01.0.0001",
     },
 
-    //ROS configuration
+    // ROS certificate configuration
+    // Used by the .NET signing microservice
     rosCertPath: {
       type: String,
       required: true,
@@ -43,16 +48,20 @@ const companySchema = new mongoose.Schema(
       required: true,
     },
 
+    // Optional agent identifier (for bureau / agent submissions)
     agentTain: {
       type: String,
     },
 
-    // Control flag (future-proofing)
+    // Soft enable/disable flag (future-proofing)
     active: {
       type: Boolean,
       default: true,
     },
   },
+
+  // Automatically stores createdAt and updatedAt
+  // Supports auditability and submission traceability
   { timestamps: true },
 );
 

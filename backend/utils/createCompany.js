@@ -1,8 +1,8 @@
 // ----------------------------------------------------
-// Creates PAYCOMP (company details) seed data
+// Utility: Seeds Company configuration (PAYCOMP data)
+// Required for ERR generation and ROS integration
 // Run with: node utils/createCompany.js
 // ----------------------------------------------------
-
 import dotenv from "dotenv";
 import Company from "../models/Company.js";
 import connectDB from "../config/db.js";
@@ -10,12 +10,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
-await connectDB();
+await connectDB(); // Establish MongoDB connection
 
 // Required to use __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Default company configuration (PIT test environment)
 const company = {
   employerRegistrationNumber: "8031508KH",
   payrollReference: "ERI4",
@@ -23,7 +24,7 @@ const company = {
   softwareUsed: "ERRExpenseManagementSystem",
   softwareVersion: "0.01.0.0001",
 
-  // ROS certificate configuration (PIT test cert details)
+  // ROS certificate configuration (used by signing microservice)
   rosCertPath: path.join(__dirname, "..", "certs", "999966377.p12"),
   rosCertPassword: "d301b398",
   agentTain: "88502T",
@@ -32,7 +33,7 @@ const company = {
 
 async function createCompany() {
   try {
-    // Clear any existing company records
+    // Ensure single active company record
     await Company.deleteMany({});
 
     const newCompany = await Company.create(company);

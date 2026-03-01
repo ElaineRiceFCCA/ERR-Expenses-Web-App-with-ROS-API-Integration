@@ -11,11 +11,12 @@ import Company from "../models/Company.js";
 
 const router = express.Router();
 
-// Admin-only dashboard endpoint
+// Admin dashboard endpoint
+// Protected by JWT authentication and RBAC
 router.get("/dashboard", protect, adminOnly, async (req, res) => {
   res.json({
     message: "Welcome to the Admin Dashboard",
-    user: req.user,
+    user: req.user, // Injected by protect middleware
     docs: [
       "/api/admin/users",
       "/api/admin/users/:id",
@@ -26,10 +27,12 @@ router.get("/dashboard", protect, adminOnly, async (req, res) => {
 
 // ----------------------------------------------------
 // POST /api/admin/revenue/handshake
-// Tests ROS connectivity using company certificate
+// Tests ROS connectivity using active company config
+// Calls signing / handshake service
 // ----------------------------------------------------
 router.post("/revenue/handshake", protect, adminOnly, async (req, res) => {
   try {
+    // Retrieve active company configuration
     const company = await Company.findOne({ active: true });
 
     if (!company) {
@@ -38,6 +41,7 @@ router.post("/revenue/handshake", protect, adminOnly, async (req, res) => {
       });
     }
 
+    // Execute ROS handshake via service layer
     const result = await performRevenueHandshake(company);
 
     res.json({
@@ -53,7 +57,10 @@ router.post("/revenue/handshake", protect, adminOnly, async (req, res) => {
   }
 });
 
-// CRUD endpoints
+// ----------------------------------------------------
+// Admin user management (CRUD)
+// All routes require protect + adminOnly middleware.
+// ----------------------------------------------------
 router.get("/users", protect, adminOnly, getAllUsers);
 router.get("/users/:id", protect, adminOnly, getUserById);
 router.put("/users/:id", protect, adminOnly, updateUserRole);

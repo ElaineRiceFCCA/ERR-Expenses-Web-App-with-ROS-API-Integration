@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
 
+// Represents a Revenue ERR reporting element
+// Defines the category/subcategory structure used
+// when building submission payloads
 const elementSchema = new mongoose.Schema(
   {
-    // Revenue ERR category
+    // Revenue-defined ERR category (restricted to supported values)
     category: {
       type: String,
       required: true,
@@ -13,30 +16,34 @@ const elementSchema = new mongoose.Schema(
       ],
     },
 
-    // Revenue ERR subCategory (nullable for some categories)
+    // Revenue subCategory (optional depending on category)
     subCategory: {
       type: String,
       required: false,
     },
 
-    // Human-readable description (for UI purposes)
+    // UI-facing description for claim entry screens
     description: {
       type: String,
       required: true,
     },
 
-    // Control flag (future-proofing)
+    // Soft enable/disable flag to control availability
     active: {
       type: Boolean,
       default: true,
     },
 
-    // Only used for REMOTE_WORKING_DAILY_ALLOWANCE category
+    // Daily rate (used only for REMOTE_WORKING_DAILY_ALLOWANCE)
+    // Enables validation or auto-calculation logic if required
     rate: {
       type: Number,
       required: false,
     },
   },
+
+  // Automatically stores createdAt and updatedAt
+  // Supports auditability and submission traceability
   { timestamps: true },
 );
 

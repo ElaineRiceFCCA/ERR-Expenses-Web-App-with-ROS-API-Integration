@@ -1,28 +1,34 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+// Represents an authenticated system user
+// Supports RBAC (admin / processor)
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true }, // Full name
-    email: { type: String, required: true, unique: true }, // Email for login
-    password: { type: String, required: true }, // Hashed password
-    role: { type: String, enum: ["admin", "processor"], default: "processor" }, // RBAC
+    name: { type: String, required: true }, // Display name
+    email: { type: String, required: true, unique: true }, // Login identifier
+    password: { type: String, required: true }, // Stored as bcrypt hash
+    role: { type: String, enum: ["admin", "processor"], default: "processor" }, // RBAC: Default least-privilege role
   },
+
+  // Automatically stores createdAt and updatedAt
+  // Supports auditability and submission traceability
   { timestamps: true },
 );
 
-// Encrypt password before saving to DB
+// Pre-save hook: hashes password before persisting
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // Only hash if password is new or changed
+  if (!this.isModified("password")) return next(); // Runs only if password is new or modified
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// Compare entered password with hashed password in DB
+// Instance method: compares plaintext password
+// with stored bcrypt hash during login
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Export Mongoose model
+// Export model
 const User = mongoose.model("User", userSchema);
 export default User;

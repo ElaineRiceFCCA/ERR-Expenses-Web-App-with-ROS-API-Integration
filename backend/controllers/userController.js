@@ -1,6 +1,7 @@
 import User from "../models/Users.js";
 
-// Admin: Get all users
+// Admin: Retrieve all users
+// Password field is excluded from response
 export const getAllUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
@@ -12,7 +13,8 @@ export const getAllUsers = async (req, res) => {
   }
 };
 
-// Admin: Get single user by ID
+// Admin: Retrieve a single user by ID
+// Returns 404 if not found
 export const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
@@ -25,10 +27,13 @@ export const getUserById = async (req, res) => {
   }
 };
 
-// Admin: Update user role
+// Admin: Update a user's role
+// Restricts role values to supported RBAC roles
 export const updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
+
+    // Validate allowed roles
     if (!["admin", "processor"].includes(role)) {
       return res.status(400).json({ message: "Invalid role value" });
     }
@@ -47,7 +52,7 @@ export const updateUserRole = async (req, res) => {
   }
 };
 
-// Admin: Delete user
+// Admin: Permanently delete a user
 export const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);

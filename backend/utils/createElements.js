@@ -1,5 +1,6 @@
 // ----------------------------------------------------
-// Creates ERR payment elements (PAYCELMS)
+// Utility: Seeds ERR reporting elements (PAYCELMS)
+// Defines supported category/subCategory combinations
 // Run with: node utils/createElements.js
 // ----------------------------------------------------
 
@@ -8,14 +9,15 @@ import Element from "../models/Element.js";
 import connectDB from "../config/db.js";
 
 dotenv.config();
-await connectDB();
+await connectDB(); // Establish MongoDB connection
 
+// Revenue-aligned ERR element definitions (PIT scope)
 const elements = [
   {
     category: "REMOTE_WORKING_DAILY_ALLOWANCE",
     subCategory: null,
     description: "Remote working daily allowance",
-    rate: 3.2,
+    rate: 3.2, // Daily rate used in amount calculation (hardcoded for POC)
   },
   {
     category: "SMALL_BENEFITS_EXEMPTION",
@@ -69,9 +71,10 @@ const elements = [
 
 async function createElements() {
   try {
-    // Clear existing elements
+    // Reset existing elements (POC assumption)
     await Element.deleteMany({});
 
+    // Insert predefined ERR element set
     for (const el of elements) {
       const newEl = await Element.create(el);
       console.log(

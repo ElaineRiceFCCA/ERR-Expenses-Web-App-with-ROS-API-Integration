@@ -19,6 +19,8 @@ using System.Text;
 */
 
 var builder = WebApplication.CreateBuilder(args);
+
+// CORS policy to allow frontend (development mode)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -49,7 +51,6 @@ string certPath = Path.Combine(
 // Revenue specification states:
 // For web service usage, password must be:
 // Base64( MD5( plainPassword ) )
-
 string plainPassword = "d301b398";
 string hashedPassword;
 
@@ -89,6 +90,7 @@ try
         X509KeyStorageFlags.Exportable
     );
 
+    // Extract public certificate (no private key)
     byte[] certBytes = certificate.Export(X509ContentType.Cert);
     certBase64 = Convert.ToBase64String(certBytes);
 

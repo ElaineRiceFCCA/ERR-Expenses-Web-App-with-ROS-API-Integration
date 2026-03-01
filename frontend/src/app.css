@@ -1,9 +1,14 @@
-/* ============================
-         SD Worx Styles
-   ============================ */
+/* ====================================================
+   Global Application Styles (SD Worx Theming)
+   Defines design system tokens + component styling
+   ==================================================== */
+
+/* ------------------------------
+   Design System Variables
+   ------------------------------ */
 
 :root {
-  /* Brand Colors */
+  /* Brand palette */
   --sdw-primary: #2a4b8d; /* Deep SD Worx Blue */
   --sdw-primary-light: #e7f0ff; /* Light blue hover / background */
   --sdw-accent: #f37c21; /* SD Worx Orange accent */
@@ -16,7 +21,7 @@
   --sdw-warning: #c96b00; /* Warning amber */
   --sdw-info: #0062cc; /* Info blue */
 
-  /* Typography */
+  /* Typography scale */
   --font-family-base: "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-size-base: 16px;
   --font-size-sm: 0.875rem; /* small text */
@@ -26,29 +31,30 @@
   --font-weight-bold: 700;
   --line-height-base: 1.6;
 
-  /* Layout & Spacing Scale */
+  /* Spacing scale */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
 
-  /* Borders & Shadows */
+  /* Radius + shadows */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
-
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.12);
 
-  /* Transitions */
+  /* Animation timing */
   --transition-fast: 0.15s ease;
   --transition-base: 0.25s ease;
   --transition-slow: 0.4s ease;
 }
 
-/* Page base */
+/* ------------------------------
+   Base Layout
+   ------------------------------ */
 body {
   font-family: var(--font-family-base);
   font-size: var(--font-size-base);
@@ -57,7 +63,9 @@ body {
   background-color: var(--sdw-bg);
 }
 
-/* Landing */
+/* ------------------------------
+   Landing Page Styling
+   ------------------------------ */
 .landing-hero {
   background: linear-gradient(
     135deg,
@@ -78,6 +86,7 @@ body {
   object-fit: contain;
 }
 
+/* Feature cards (landing highlights) */
 .feature {
   padding: 0.75rem;
   border-radius: 12px;
@@ -97,7 +106,9 @@ body {
   margin-bottom: 0;
 }
 
-/* Dashboards */
+/* ------------------------------
+   Dashboard Layout
+   ------------------------------ */
 .admin-dashboard,
 .processor-dashboard {
   background-color: var(--sdw-bg);
@@ -105,7 +116,7 @@ body {
   padding-top: var(--spacing-xl);
 }
 
-/* Cards / boxes */
+/* Card container */
 .sdw-box {
   background-color: var(--sdw-surface);
   box-shadow: var(--shadow-md);
@@ -114,7 +125,9 @@ body {
   border: 1px solid var(--sdw-border);
 }
 
-/* Tables */
+/* ------------------------------
+   Tables
+   ------------------------------ */
 .sdw-table {
   width: 100%;
   border-collapse: collapse;
@@ -140,8 +153,9 @@ body {
   background-color: var(--sdw-primary-light);
 }
 
-/* Buttons */
-
+/* ------------------------------
+   Buttons
+   ------------------------------ */
 .sdw-button {
   background-color: var(--sdw-primary);
   color: var(--sdw-surface);
@@ -153,6 +167,7 @@ body {
   background-color: var(--sdw-accent);
 }
 
+/* Bulma overrides */
 .button.sdw-button {
   background-color: #da3300;
   color: #ffffff;
@@ -179,7 +194,9 @@ body {
   color: var(--sdw-warning);
 }
 
-/* Tags */
+/* ------------------------------
+   Status Tags
+   ------------------------------ */
 .tag.is-success {
   background-color: var(--sdw-success) !important;
   color: var(--sdw-surface) !important;
@@ -190,7 +207,9 @@ body {
   color: var(--sdw-surface) !important;
 }
 
-/* Navbar */
+/* ------------------------------
+   Navbar
+   ------------------------------ */
 .sdw-navbar {
   background: var(--sdw-bg);
   box-shadow: var(--shadow-sm);
@@ -237,6 +256,7 @@ body {
   color: var(--sdw-surface);
 }
 
+/* Logout styling */
 .sdw-logout {
   background-color: var(--sdw-surface);
   border: 1px solid var(--sdw-border);
@@ -251,6 +271,7 @@ body {
   color: var(--sdw-surface);
 }
 
+/* User indicator */
 .sdw-user-label {
   font-size: 0.75rem;
   color: #666;
@@ -259,7 +280,9 @@ body {
   margin-right: 1rem;
 }
 
-/* Utilities */
+/* ------------------------------
+   Utility Classes
+   ------------------------------ */
 .text-muted {
   color: #777;
 }
@@ -276,7 +299,9 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* Notifications */
+/* ------------------------------
+   Notifications
+   ------------------------------ */
 .notification.is-danger {
   background-color: var(--sdw-danger);
   color: var(--sdw-surface);
@@ -287,6 +312,7 @@ body {
   color: var(--sdw-surface);
 }
 
+/* Admin shortcut styling */
 .sdw-nav-button.is-admin {
   background-color: var(--sdw-accent-light);
   color: var(--sdw-primary);

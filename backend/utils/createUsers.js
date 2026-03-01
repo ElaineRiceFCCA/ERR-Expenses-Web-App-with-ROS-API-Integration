@@ -1,6 +1,7 @@
 // ----------------------------------------------------
-// Creates new admin and processor users directly in DB
-// Run with: node utils/createUsers.js from root backend directory
+// Utility: Seeds test users (admin + processor)
+// Passwords are hashed via User model pre-save hook
+// Run with: node utils/createUsers.js
 // ----------------------------------------------------
 
 import dotenv from "dotenv";
@@ -9,8 +10,9 @@ import User from "../models/Users.js";
 import connectDB from "../config/db.js";
 
 dotenv.config();
-await connectDB();
+await connectDB(); // Establish MongoDB connection
 
+// Default test accounts for RBAC validation
 const users = [
   {
     name: "Admin User",
@@ -28,12 +30,13 @@ const users = [
 
 async function createUsers() {
   try {
-    // Clear existing test users if needed
+    // Remove existing seed users (POC reset strategy)
     await User.deleteMany({
       email: { $in: ["admin@test.com", "processor@test.com"] },
     });
 
-    // Insert users
+    // Insert predefined users
+    // Password hashing handled automatically in model pre-save hook
     for (const user of users) {
       const newUser = await User.create(user);
       console.log(`Created user: ${newUser.email} (${newUser.role})`);

@@ -6,20 +6,24 @@ const router = express.Router();
 
 // ----------------------------------------------------
 // POST /api/submissions/generate
+// Generates an ERR submission for a given payDate
+// Requires authenticated user
 // ----------------------------------------------------
-
 router.post("/generate", protect, async (req, res) => {
   try {
     const { payDate } = req.body;
+
+    // payDate determines reporting period grouping
     if (!payDate) {
       return res.status(400).json({ message: "payDate is required" });
     }
 
+    // Delegate ERR payload construction to service layer
     const submission = await generateERRSubmission(new Date(payDate));
 
     res.status(201).json({
       message: "ERR submission generated successfully",
-      submissionID: submission.submissionID,
+      submissionID: submission.submissionID, // Unique ROS-compliant identifier
       submission,
     });
   } catch (err) {

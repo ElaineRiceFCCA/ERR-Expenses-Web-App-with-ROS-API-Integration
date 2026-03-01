@@ -1,6 +1,8 @@
 <script lang="ts">
   import { redirect } from '@sveltejs/kit';
 
+// Server-side load function.
+// Immediately redirects to external SD Worx payroll services page.
 export const load = () => {
 	throw redirect(
 		302,
@@ -10,28 +12,34 @@ export const load = () => {
 
 </script>
 
+<!-- Landing hero layout (fallback UI if redirect disabled) -->
 <section class="hero is-fullheight-with-navbar landing-hero">
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
         <div class="column is-10-tablet is-7-desktop is-6-widescreen">
-          <!-- ONE main card -->
+          
+          <!-- Primary landing card -->
           <div class="box landing-card">
+
+            <!-- Branding -->
             <div class="has-text-centered mb-5">
               <img class="landing-logo" src="/sd-worx-logo.png" alt="SD Worx Expenses" />
             </div>
 
+             <!-- Application introduction -->
             <div class="has-text-centered mb-4">
               <h1 class="title is-3">Expense Management System</h1>
               <p>Manage and submit ERR Expenses efficiently with our secure web application.</p>
               <br />
             </div>
 
-
-            <!-- Login button INSIDE the card -->
+            <!-- Login entry point -->
             <div class="has-text-centered mb-5">
               <a class="button sdw-button is-medium" href="/login">Log in</a>
             </div>
+
+            <!-- Feature highlights -->
             <div class="columns is-multiline is-mobile">
               <div class="column is-6">
                 <div class="feature">
@@ -64,6 +72,7 @@ export const load = () => {
 
             <hr />
 
+            <!-- Footer -->
             <div class="level is-mobile">
               <div class="level-left">
                 <p class="has-text-grey is-size-7">© SD Worx</p>
@@ -75,7 +84,6 @@ export const load = () => {
               </div>
             </div>
           </div>
-          <!-- /main card -->
         </div>
       </div>
     </div>

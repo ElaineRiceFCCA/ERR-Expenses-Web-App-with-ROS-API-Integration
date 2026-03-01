@@ -7,22 +7,25 @@ const router = express.Router();
 
 // ----------------------------------------------------
 // POST /api/revenue/handshake
-// Admin-only: performs ROS handshake
+// Executes ROS handshake using active company config
+// Requires authenticated user
 // ----------------------------------------------------
 router.post("/handshake", protect, async (req, res) => {
   try {
+    // Retrieve active company configuration
     const company = await Company.findOne({ active: true });
     if (!company) {
       return res.status(400).json({ message: "No active company found" });
     }
 
+    // Call service layer to perform certificate-based handshake
     const result = await performRevenueHandshake(company);
 
     res.json({
       message: "Revenue handshake completed",
       status: result.status,
       response: result.body,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString(), // Audit timestamp
     });
   } catch (err) {
     res.status(500).json({

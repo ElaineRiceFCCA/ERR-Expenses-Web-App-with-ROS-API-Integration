@@ -1,17 +1,20 @@
-// frontend/src/lib/auth.ts
-// Handles login, logout, and JWT persistence for the ERR Expenses Web App frontend
-
+// ----------------------------------------------------
+// Frontend authentication helper
+// Handles login, logout, and JWT persistence
+// ----------------------------------------------------
 export interface LoginResponse {
   token: string;
   role: "admin" | "processor";
 }
 
+// Performs login against backend API
+// On success, persists JWT + role in localStorage
 export async function login(
   email: string,
   password: string,
 ): Promise<LoginResponse | null> {
   try {
-    // Backend API endpoint
+    // Backend authentication endpoint
     const res = await fetch("http://localhost:5500/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,7 +25,7 @@ export async function login(
 
     const data = await res.json();
 
-    // Persist credentials
+    // Persist session data for subsequent API calls
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
     localStorage.setItem("user", data.name);
@@ -37,7 +40,8 @@ export async function login(
   }
 }
 
-// Added logout helper
+// Clears persisted authentication data
+// Used during logout flow
 export function logout(): void {
   localStorage.removeItem("token");
   localStorage.removeItem("role");

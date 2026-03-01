@@ -3,15 +3,17 @@
   import { goto } from '$app/navigation';
   import { onMount } from 'svelte';
 
+  // UI state
   let loading = false;
   let result: string | null = null;
   let error: string | null = null;
   let statusCode: number | null = null;
 
   // Signing service runs on another port
-  const SIGNING_BASE = 'http://localhost:5086';
-  const NODE_BASE = 'http://localhost:5500';
+  const SIGNING_BASE = 'http://localhost:5086'; // .NET signing microservice
+  const NODE_BASE = 'http://localhost:5500'; // Node backend API
 
+  // Enforce admin-only access on mount
   onMount(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
@@ -20,6 +22,7 @@
     if (role !== 'admin') goto('/processor');
   });
 
+  // Resets UI state before executing request
   function resetState() {
     loading = true;
     result = null;
@@ -27,6 +30,7 @@
     statusCode = null;
   }
 
+  // Standardised response handler for all requests
   async function handleResponse(res: Response) {
     statusCode = res.status;
 
@@ -49,9 +53,9 @@
     loading = false;
   }
 
-  // ============================
-  // NODE BACKEND HANDSHAKE
-  // ============================
+  // ----------------------------------------------------
+  // Revenue handshake (via Node backend)
+  // ----------------------------------------------------
   async function runHandshake() {
     resetState();
 
@@ -73,9 +77,9 @@
     }
   }
 
-  // ============================
-  // SIGNING SERVICE HEALTH
-  // ============================
+  // ----------------------------------------------------
+  // Signing service health endpoint
+  // ----------------------------------------------------
   async function checkHealth() {
     resetState();
 
@@ -88,9 +92,9 @@
     }
   }
 
-  // ============================
-  // CERT INFO
-  // ============================
+  // ----------------------------------------------------
+  // Retrieve certificate metadata from signing service
+  // ----------------------------------------------------
   async function getCertInfo() {
     resetState();
 
@@ -103,9 +107,9 @@
     }
   }
 
-  // ============================
-  // SIGN TEST DATA
-  // ============================
+  // ----------------------------------------------------
+  // Test raw signing functionality
+  // ----------------------------------------------------
   async function signTestData() {
     resetState();
 
@@ -126,6 +130,7 @@
   }
 </script>
 
+<!-- Global navigation -->
 <Menu />
 
 <section class="section admin-dashboard">
@@ -140,7 +145,7 @@
         Test Revenue signing service and backend integration.
       </p>
 
-      <!-- BUTTON GRID -->
+      <!-- Action buttons -->
       <div class="buttons mb-4">
 
         <button
@@ -177,7 +182,7 @@
 
       </div>
 
-      <!-- STATUS -->
+      <!-- Status display -->
       {#if loading}
         <p class="has-text-grey">Processing request...</p>
       {/if}
@@ -188,7 +193,7 @@
         </p>
       {/if}
 
-      <!-- SUCCESS -->
+      <!-- Success output -->
       {#if result}
         <div class="notification is-success mt-4">
           <strong>Response</strong>
@@ -196,7 +201,7 @@
         </div>
       {/if}
 
-      <!-- ERROR -->
+      <!-- Error output -->
       {#if error}
         <div class="notification is-danger mt-4">
           <strong>Error</strong>
