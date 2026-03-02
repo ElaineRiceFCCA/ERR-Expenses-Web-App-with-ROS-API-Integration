@@ -1,8 +1,12 @@
 import mongoose from "mongoose";
 
+// ----------------------------------------------------
+// Element Schema
 // Represents a Revenue ERR reporting element
 // Defines the category/subcategory structure used
 // when building submission payloads
+// ----------------------------------------------------
+
 const elementSchema = new mongoose.Schema(
   {
     // Revenue-defined ERR category (restricted to supported values)

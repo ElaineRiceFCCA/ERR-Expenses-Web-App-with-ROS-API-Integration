@@ -1,8 +1,12 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+// ----------------------------------------------------
+// User Schema
 // Represents an authenticated system user
 // Supports RBAC (admin / processor)
+// ----------------------------------------------------
+
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true }, // Display name

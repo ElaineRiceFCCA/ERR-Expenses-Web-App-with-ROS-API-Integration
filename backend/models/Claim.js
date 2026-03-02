@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
+// ----------------------------------------------------
+// Claim Schema
 // Represents a single expense/benefit claim prior to ERR submission
 // Acts as the primary transactional entity in the system
+// ----------------------------------------------------
+
 const claimSchema = new mongoose.Schema(
   {
     // User (processor) who created the claim

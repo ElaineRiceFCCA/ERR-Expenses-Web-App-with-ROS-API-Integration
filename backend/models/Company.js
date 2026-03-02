@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
+// ----------------------------------------------------
+// Company Schema
 // Stores organisation-level configuration required
 // for ERR generation and ROS submission
+// ----------------------------------------------------
+
 const companySchema = new mongoose.Schema(
   {
     // Revenue employer identifier (unique per organisation)

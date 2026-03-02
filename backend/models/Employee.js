@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 
+// ----------------------------------------------------
+// Employee Schema
 // Represents an employee included in ERR submissions.
 // Supports both PPSN-known and PPSN-unknown reporting scenarios.
+// ----------------------------------------------------
+
 const employeeSchema = new mongoose.Schema(
   {
     // Core identity fields
