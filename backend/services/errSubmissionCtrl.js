@@ -5,17 +5,33 @@ import Claim from "../models/Claim.js";
 import "../models/Employee.js";
 import "../models/Element.js";
 
-// ----------------------------------------------------
-// generateERRSubmission(payDate)
-// Builds a Revenue-compliant ERR submission payload
-// for a specific payDate
-// ----------------------------------------------------
-export async function generateERRSubmission(payDate) {
-  // 1. Load active company configuration
+/* ----------------------------------------------------
+generateERRSubmission(payDate)
+
+PURPOSE:
+- Builds a Revenue-compliant ERR submission payload
+- Generate run reference & submission ID
+- Export JSON file for manual filing
+- Return structured submission object
+
+NOTE:
+This function DOES NOT:
+- Sign
+- Call Revenue
+- Update claim statuses
+----------------------------------------------------*/
+export async function generateERRSubmission(payDateInput) {
+  // ------------------------------
+  // Load active company configuration
+  // ------------------------------
   const company = await Company.findOne({ active: true });
   if (!company) throw new Error("No active company found");
 
-  // 2. Load claims within the specified UTC day range
+  const payDate = new Date(payDateInput);
+
+  // ------------------------------
+  // Load claims within the specified UTC day range
+  // ------------------------------
   const start = new Date(payDate);
   start.setUTCHours(0, 0, 0, 0);
 
@@ -33,18 +49,17 @@ export async function generateERRSubmission(payDate) {
     throw new Error("No claims found for payDate");
   }
 
-  // 3. Construct Revenue run references
-  const dateObj = new Date(payDate);
-
-  const yyyyMM = dateObj.toISOString().slice(0, 7).replace("-", "");
-
+  // ------------------------------
+  // Generate Revenue identifiers
+  // ------------------------------
+  const yyyyMM = payDate.toISOString().slice(0, 7).replace("-", "");
   const runSequence = "1N"; // POC: always first normal run (hardcoded)
-
   const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}${runSequence}`;
-
   const submissionID = `${enhancedReportingRunReference}-ER1`;
 
-  // 4. Build expensesBenefits line items
+  // ------------------------------
+  // Build expensesBenefits line items
+  // ------------------------------
   const expensesBenefits = claims.map((claim, index) => {
     if (!claim.employee || !claim.element) {
       throw new Error("Claim missing employee or element reference");
@@ -73,7 +88,7 @@ export async function generateERRSubmission(payDate) {
       lineItem.numberOfDays = claim.days;
     }
 
-    // Employee identification branching:
+    // Employee identification branching
     // PPSN-known vs PPSN-unknown structure
     if (empl.employeePpsn && empl.employmentID) {
       lineItem.employeeID = {
@@ -99,8 +114,12 @@ export async function generateERRSubmission(payDate) {
     return lineItem;
   });
 
-  // 5. Assemble submission object
+  // ------------------------------
+  // Assemble submission object
+  // ------------------------------
   const submission = {
+    employerRegistrationNumber: company.employerRegistrationNumber,
+    taxYear: company.taxYear,
     enhancedReportingRunReference,
     submissionID,
     body: {
@@ -108,7 +127,9 @@ export async function generateERRSubmission(payDate) {
     },
   };
 
-  // 6. Persist JSON export
+  // ------------------------------
+  // Export JSON file (manual filing requirement)
+  // ------------------------------
   const exportDir = path.resolve("exports");
   if (!fs.existsSync(exportDir)) {
     fs.mkdirSync(exportDir, { recursive: true });
