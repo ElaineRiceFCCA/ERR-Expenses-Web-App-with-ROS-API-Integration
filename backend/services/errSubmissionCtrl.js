@@ -2,30 +2,105 @@ import fs from "fs";
 import path from "path";
 import Company from "../models/Company.js";
 import Claim from "../models/Claim.js";
-import "../models/Employee.js";
-import "../models/Element.js";
 
 /* ----------------------------------------------------
-generateERRSubmission(payDate)
-
-PURPOSE:
-- Builds a Revenue-compliant ERR submission payload
-- Generate run reference & submission ID
-- Export JSON file for manual filing
-- Return structured submission object
-
-NOTE:
-This function DOES NOT:
-- Sign
-- Call Revenue
-- Update claim statuses
+Helpers
 ----------------------------------------------------*/
+
+function getPayPeriod(payDate) {
+  return payDate.toISOString().slice(0, 7).replace("-", "");
+}
+
+function generateIdentifiers(company, payDate) {
+  const yyyyMM = getPayPeriod(payDate);
+  const runSequence = "1N";
+
+  const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}${runSequence}`;
+
+  const submissionID = `${enhancedReportingRunReference}-ER1`;
+
+  return { enhancedReportingRunReference, submissionID };
+}
+
+function buildEmployeeIdentity(employee) {
+  if (employee.employeePpsn && employee.employmentID) {
+    return {
+      employeeID: {
+        employmentID: employee.employmentID,
+        employeePpsn: employee.employeePpsn,
+      },
+      name: {
+        firstName: employee.firstName,
+        familyName: employee.familyName,
+      },
+    };
+  }
+
+  return {
+    employeeID: {
+      employerReference: employee.employerReference,
+    },
+    name: {
+      firstName: employee.firstName,
+      familyName: employee.familyName,
+    },
+    address: employee.address,
+    dateOfBirth: employee.dateOfBirth
+      ? employee.dateOfBirth.toISOString().slice(0, 10)
+      : undefined,
+  };
+}
+
+function buildLineItem(claim, submissionID, index) {
+  const employee = claim.employee;
+  const element = claim.element;
+
+  const lineItem = {
+    lineItemID: `${submissionID}-${index + 1}`,
+    category: element.category,
+    paymentDate: claim.payDate.toISOString().slice(0, 10),
+    amount: Number(claim.amount.toFixed(2)),
+  };
+
+  if (element.subCategory) {
+    lineItem.subCategory = element.subCategory;
+  }
+
+  if (element.category === "REMOTE_WORKING_DAILY_ALLOWANCE") {
+    lineItem.numberOfDays = claim.days || 1;
+  }
+
+  Object.assign(lineItem, buildEmployeeIdentity(employee));
+
+  return lineItem;
+}
+
+function exportSubmissionFile(submissionID, submission) {
+  const exportDir = path.resolve("exports");
+
+  if (!fs.existsSync(exportDir)) {
+    fs.mkdirSync(exportDir, { recursive: true });
+  }
+
+  const filePath = path.join(exportDir, `${submissionID}.json`);
+
+  fs.writeFileSync(filePath, JSON.stringify(submission, null, 2));
+
+  return filePath;
+}
+
+/* ----------------------------------------------------
+MAIN FUNCTION
+----------------------------------------------------*/
+
 export async function generateERRSubmission(payDateInput) {
   // ------------------------------
   // Load active company configuration
   // ------------------------------
   const company = await Company.findOne({ active: true });
-  if (!company) throw new Error("No active company found");
+  if (!company) {
+    throw new Error("No active company configuration found");
+  }
 
   const payDate = new Date(payDateInput);
 
@@ -40,79 +115,30 @@ export async function generateERRSubmission(payDateInput) {
 
   const claims = await Claim.find({
     payDate: { $gte: start, $lte: end },
+    status: "pending",
   })
     .populate("employee") // Required for PPSN branching
     .populate("element") // Required for category mapping
     .sort({ employee: 1, createdAt: 1 });
 
   if (!claims.length) {
-    throw new Error("No claims found for payDate");
+    throw new Error("No pending claims found for selected payDate");
   }
 
   // ------------------------------
   // Generate Revenue identifiers
   // ------------------------------
-  const yyyyMM = payDate.toISOString().slice(0, 7).replace("-", "");
-  const runSequence = "1N"; // POC: always first normal run (hardcoded)
-  const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}${runSequence}`;
-  const submissionID = `${enhancedReportingRunReference}-ER1`;
+  const { enhancedReportingRunReference, submissionID } = generateIdentifiers(
+    company,
+    payDate,
+  );
 
   // ------------------------------
   // Build expensesBenefits line items
   // ------------------------------
-  const expensesBenefits = claims.map((claim, index) => {
-    if (!claim.employee || !claim.element) {
-      throw new Error("Claim missing employee or element reference");
-    }
-
-    const empl = claim.employee;
-    const celms = claim.element;
-
-    const lineItem = {
-      lineItemID: `${submissionID}-${index + 1}`,
-      category: celms.category,
-      paymentDate: claim.payDate.toISOString().slice(0, 10),
-      amount: Number(claim.amount.toFixed(2)),
-    };
-
-    // Optional subCategory
-    if (celms.subCategory) {
-      lineItem.subCategory = celms.subCategory;
-    }
-
-    // Category-specific rule: remote working requires numberOfDays
-    if (celms.category === "REMOTE_WORKING_DAILY_ALLOWANCE") {
-      if (!claim.days) {
-        throw new Error("Remote working claim missing number of days");
-      }
-      lineItem.numberOfDays = claim.days;
-    }
-
-    // Employee identification branching
-    // PPSN-known vs PPSN-unknown structure
-    if (empl.employeePpsn && empl.employmentID) {
-      lineItem.employeeID = {
-        employmentID: empl.employmentID,
-        employeePpsn: empl.employeePpsn,
-      };
-      lineItem.name = {
-        firstName: empl.firstName,
-        familyName: empl.familyName,
-      };
-    } else {
-      lineItem.employeeID = {
-        employerReference: empl.employerReference,
-      };
-      lineItem.name = {
-        firstName: empl.firstName,
-        familyName: empl.familyName,
-      };
-      lineItem.address = empl.address;
-      lineItem.dateOfBirth = empl.dateOfBirth?.toISOString().slice(0, 10);
-    }
-
-    return lineItem;
-  });
+  const expensesBenefits = claims.map((claim, index) =>
+    buildLineItem(claim, submissionID, index),
+  );
 
   // ------------------------------
   // Assemble submission object
@@ -122,7 +148,7 @@ export async function generateERRSubmission(payDateInput) {
     taxYear: company.taxYear,
     enhancedReportingRunReference,
     submissionID,
-    body: {
+    requestBody: {
       expensesBenefits,
     },
   };
@@ -130,13 +156,11 @@ export async function generateERRSubmission(payDateInput) {
   // ------------------------------
   // Export JSON file (manual filing requirement)
   // ------------------------------
-  const exportDir = path.resolve("exports");
-  if (!fs.existsSync(exportDir)) {
-    fs.mkdirSync(exportDir, { recursive: true });
-  }
+  const filePath = exportSubmissionFile(submissionID, submission);
 
-  const filePath = path.join(exportDir, `${submissionID}.json`);
-  fs.writeFileSync(filePath, JSON.stringify(submission, null, 2));
-
-  return submission;
+  return {
+    submission,
+    filePath,
+    claims,
+  };
 }

@@ -2,11 +2,11 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
+
+// Route Files
 import submissionRoutes from "./routes/submissions.js";
 import employeeRoutes from "./routes/employees.js";
 import elementRoutes from "./routes/elements.js";
-
-// Route files
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
 import processorRoutes from "./routes/processor.js";
@@ -23,17 +23,23 @@ app.use(cors());
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/processor", processorRoutes);
-app.use("/api/submissions", submissionRoutes);
+app.use("/api/processor/submissions", submissionRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/elements", elementRoutes);
 app.use("/api/revenue", revenueRoutes);
 
 // Root endpoint (for testing API)
-app.get("/", (req, res) => res.send("ERR Expenses Web App API Running"));
+app.get("/", (req, res) => {
+  res.send("ERR Expenses Web App API Running");
+});
 
 // Health check endpoint
-app.get("/health", (req, res) => res.json({ ok: true }));
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
 
 // Start server
 const PORT = process.env.PORT || 5500;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
