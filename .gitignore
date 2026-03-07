@@ -150,3 +150,6 @@ Thumbs.db
 *.pfx
 *.p12
 *.pem
+
+# Ignore generated ERR export files
+backend/exports/

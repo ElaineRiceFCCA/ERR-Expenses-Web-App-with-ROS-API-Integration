@@ -13,9 +13,9 @@ function getPayPeriod(payDate) {
 
 function generateIdentifiers(company, payDate) {
   const yyyyMM = getPayPeriod(payDate);
-  const runSequence = "1N";
+  const unique = crypto.randomUUID().slice(0, 8);
 
-  const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}${runSequence}`;
+  const enhancedReportingRunReference = `${company.payrollReference}-${yyyyMM}-${unique}`;
 
   const submissionID = `${enhancedReportingRunReference}-ER1`;
 
