@@ -1,0 +1,135 @@
+body {
+  font-family: "Inter", sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 25px 10px;
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 60px;
+}
+
+.card {
+  background: #1e293b;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.panel h2 {
+  margin-bottom: 10px;
+}
+
+.muted {
+  color: #94a3b8;
+}
+
+.avatar {
+  width: 120px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #334155;
+  margin: 25px 0;
+}
+
+/* Description */
+.description {
+  margin-bottom: 40px;
+  line-height: 1.7;
+}
+
+/* Link grid */
+.link-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.link-card {
+  text-decoration: none;
+  color: #e2e8f0;
+  transition: all 0.25s ease;
+}
+
+.link-card:hover {
+  background: #111827;
+  transform: translateY(-6px);
+  border: 1px solid #3b82f6;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .link-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.banner {
+  background: #111827;
+  padding: 8px 20px;
+  border-bottom: 1px solid #1e293b;
+}
+
+.banner-content {
+  flex-direction: column;
+  text-align: center;
+}
+
+.banner-icon svg {
+  width: 48px;
+  height: 48px;
+  fill: #3b82f6;
+}
+
+.banner-text h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.banner-subtitle {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 1.1rem;
+}
+
+.meta-label {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 5px;
+}
+
+.meta-value {
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.brand-banner {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.brand-banner img {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  opacity: 0.95;
+}
