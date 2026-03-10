@@ -50,6 +50,23 @@ const submissionSchema = new mongoose.Schema(
       },
     ],
 
+    // Submission Summary
+    lineItemCount: {
+      type: Number,
+      required: true,
+    },
+
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+
+    // --- NEW: Exact line items sent to Revenue ---
+    expensesBenefits: {
+      type: Array,
+      required: true,
+    },
+
     // Revenue acknowledgement status
     // Set after submission response received
     acknowledgementStatus: {
@@ -80,4 +97,4 @@ const submissionSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-export default mongoose.model("Submission", submissionSchema);
+export default mongoose.model("Submission", submissionSchema, "submissions");

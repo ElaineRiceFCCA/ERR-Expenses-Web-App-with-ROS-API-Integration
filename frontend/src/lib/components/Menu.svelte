@@ -34,6 +34,7 @@
 
   // Navigation configuration: Processor role
   const processorLinks = [
+    { id: 'claims', href: '/processor', label: 'Claims' },
     { id: 'employees', href: '/processor/employees', label: 'Employees' },
     { id: 'elements', href: '/processor/elements', label: 'Elements' },
     { id: 'company', href: '/processor/company', label: 'Co. Details' },
@@ -58,8 +59,11 @@
         {#each adminLinks as link}
           <a
             href={link.href}
-            class="sdw-nav-button { $currentPath.startsWith(link.href) ? 'is-active' : '' }"
-          >
+            class="sdw-nav-button {  
+            link.href === '/processor'
+                ? ($currentPath === '/processor' ? 'is-active' : '')
+                : ($currentPath.startsWith(link.href) ? 'is-active' : '')
+                }">
             {link.label}
           </a>
         {/each}
@@ -70,8 +74,11 @@
         {#each processorLinks as link}
           <a
             href={link.href}
-            class="sdw-nav-button { $currentPath.startsWith(link.href) ? 'is-active' : '' }"
-          >
+            class="sdw-nav-button {  
+            link.href === '/processor'
+                ? ($currentPath === '/processor' ? 'is-active' : '')
+                : ($currentPath.startsWith(link.href) ? 'is-active' : '')
+                }">
             {link.label}
           </a>
         {/each}
