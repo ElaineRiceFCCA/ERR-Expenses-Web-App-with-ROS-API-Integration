@@ -1,6 +1,9 @@
 import express from "express";
 import { protect } from "../middleware/auth.js";
-import { getEmployees } from "../controllers/employeeController.js";
+import {
+  getEmployees,
+  createEmployee,
+} from "../controllers/employeeController.js";
 
 const router = express.Router();
 
@@ -8,5 +11,10 @@ const router = express.Router();
 // Returns all active employees
 // Requires authenticated user
 router.get("/", protect, getEmployees);
+
+// POST /api/employees
+// Creates a new employee
+// Requires authenticated user
+router.post("/", protect, createEmployee);
 
 export default router;
