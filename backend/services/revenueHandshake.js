@@ -1,5 +1,6 @@
 import https from "https";
 import crypto from "crypto";
+import Company from "../models/Company.js";
 
 // ----------------------------------------------------
 // performRevenueHandshake(company)
@@ -15,8 +16,8 @@ export async function performRevenueHandshake(company) {
   const query = new URLSearchParams({
     softwareUsed: company.softwareUsed,
     softwareVersion: company.softwareVersion,
-    employerRegistrationNumber: "8031508KH", // POC hardcoded
-    agentTain: "88502T", // POC hardcoded
+    employerRegistrationNumber: company.employerRegistrationNumber,
+    agentTain: company.agentTain,
   }).toString();
 
   const pathAndQuery = `${basePath}/handshake?${query}`;
