@@ -11,6 +11,7 @@ import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
 import processorRoutes from "./routes/processor.js";
 import revenueRoutes from "./routes/revenue.js";
+import companyRoutes from "./routes/company.js";
 
 dotenv.config();
 connectDB();
@@ -27,6 +28,7 @@ app.use("/api/processor/submissions", submissionRoutes);
 app.use("/api/employees", employeeRoutes);
 app.use("/api/elements", elementRoutes);
 app.use("/api/revenue", revenueRoutes);
+app.use("/api/company", companyRoutes);
 
 // Root endpoint (for testing API)
 app.get("/", (req, res) => {
