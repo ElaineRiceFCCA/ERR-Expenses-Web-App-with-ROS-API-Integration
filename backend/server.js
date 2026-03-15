@@ -12,6 +12,7 @@ import adminRoutes from "./routes/admin.js";
 import processorRoutes from "./routes/processor.js";
 import revenueRoutes from "./routes/revenue.js";
 import companyRoutes from "./routes/company.js";
+import reportRoutes from "./routes/reports.js";
 
 dotenv.config();
 connectDB();
@@ -29,6 +30,7 @@ app.use("/api/employees", employeeRoutes);
 app.use("/api/elements", elementRoutes);
 app.use("/api/revenue", revenueRoutes);
 app.use("/api/company", companyRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Root endpoint (for testing API)
 app.get("/", (req, res) => {
