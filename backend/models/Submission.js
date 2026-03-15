@@ -50,6 +50,13 @@ const submissionSchema = new mongoose.Schema(
       },
     ],
 
+    // User who triggered submission
+    submittedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     // Submission Summary
     lineItemCount: {
       type: Number,

@@ -95,6 +95,7 @@ export const createERRSubmission = async (req, res) => {
         acknowledgementID,
         revenueResponse: rosResponse,
         traceId: rosResponse?.traceId || null,
+        submittedBy: req.user._id,
       });
 
       console.log("Submission saved:", newSubmission._id);
