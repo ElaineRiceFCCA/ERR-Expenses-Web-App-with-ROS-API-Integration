@@ -3,28 +3,59 @@
   import { goto } from "$app/navigation";
   import Menu from "$lib/components/Menu.svelte";
 
+  // ======================================================
+  // COMPONENT PURPOSE
+  // ======================================================
+  // This page allows authorised users (processor/admin)
+  // to manage Expense Elements
+  //
+  // Elements represent Revenue-defined ERR categories
+  // such as:
+  //   - REMOTE_WORKING_DAILY_ALLOWANCE
+  //   - SMALL_BENEFITS_EXEMPTION
+  //   - TRAVEL_AND_SUBSISTENCE
+  //
+  // These definitions are later referenced by Claims
+  // ======================================================
+
+
   // ----------------------------------------------------
-  // Component State
+  // COMPONENT STATE
   // ----------------------------------------------------
 
-  let elements: any[] = [];   // List of existing expense elements from backend
+  let elements: any[] = [];   
+  // Active expense element records retrieved from backend
 
-  // Form fields for new element creation
+
+  // ----------------------------------------------------
+  // FORM STATE (New Element Creation)
+  // ----------------------------------------------------
+
   let category = "";
   let subCategory = "";
   let description = "";
   let rate = "";
+  // Controlled inputs for element creation form
 
-  // UI feedback state
+
+  // ----------------------------------------------------
+  // UI STATE
+  // ----------------------------------------------------
+
   let message = "";
   let error = "";
   let loading = true;
+  // Controls user feedback and loading indicator
+
 
   // ----------------------------------------------------
-  // Revenue Travel and Subsistence Subcategories
+  // REVENUE TRAVEL & SUBSISTENCE SUBCATEGORIES
   // ----------------------------------------------------
-  // Defined explicitly to match Revenue ERR specification
-  // Only applicable when category = TRAVEL_AND_SUBSISTENCE
+  // Explicit list matching Revenue ERR specification
+  // Only applicable when:
+  //   category === "TRAVEL_AND_SUBSISTENCE"
+  //
+  // Keeps frontend aligned with statutory definitions
 
   const travelSubCategories = [
     "EATING_ON_SITE",
@@ -36,17 +67,25 @@
     "TRAVEL_VOUCHED",
   ];
 
+
   // ----------------------------------------------------
-  // Fetch Elements
+  // FETCH ELEMENTS
   // ----------------------------------------------------
   // Retrieves active expense elements from backend
-  // Enforces authentication and role-based access control
+  // Enforces:
+  //   - Authentication (JWT required)
+  //   - Role-based access control
+  //
+  // Populates the elements array used for:
+  //   - Display table
+  //   - Claim reference selection
+  // ----------------------------------------------------
 
   async function fetchElements() {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
-    // Enforce authentication
+    // Redirect if unauthenticated
     if (!token) return goto("/login");
 
     // Restrict access to processor or admin roles
@@ -69,11 +108,21 @@
     }
   }
 
+
   // ----------------------------------------------------
-  // Add New Element
+  // ADD NEW ELEMENT
   // ----------------------------------------------------
-  // Sends new expense element definition to backend API
-  // Handles conditional subCategory and rate conversion
+  // Sends new expense element definition to backend
+  //
+  // Business Rules:
+  //   - subCategory only valid for Travel & Subsistence
+  //   - rate only relevant for Remote Working Allowance
+  //   - rate converted from string to numeric value
+  //
+  // After successful creation:
+  //   - Form fields reset
+  //   - Elements list refreshed
+  // ----------------------------------------------------
 
   async function addElement() {
     const token = localStorage.getItem("token");
@@ -87,10 +136,8 @@
         },
         body: JSON.stringify({
           category,
-          // SubCategory only applies to Travel and Subsistence
           subCategory: category === "TRAVEL_AND_SUBSISTENCE" ? subCategory : null,
           description,
-          // Convert rate string to number if provided
           rate: rate ? Number(rate) : undefined,
         }),
       });
@@ -104,7 +151,7 @@
         description = "";
         rate = "";
 
-        // Refresh element list
+        // Refresh list
         fetchElements();
       } else {
         error = "Failed to add element.";
@@ -114,9 +161,16 @@
     }
   }
 
-  // Load elements on component mount
+
+  // ----------------------------------------------------
+  // INITIAL PAGE LOAD
+  // ----------------------------------------------------
+  // Fetch element definitions when component mounts
+  // ----------------------------------------------------
+
   onMount(fetchElements);
 </script>
+
 
 <Menu />
 
@@ -126,19 +180,23 @@
       Expense Elements
     </h1>
 
-    <!-- Error Notification -->
+    <!-- ======================================================
+         NOTIFICATIONS
+    ====================================================== -->
+
     {#if error}
       <div class="notification is-danger">{error}</div>
     {/if}
 
-    <!-- Success Notification -->
     {#if message}
       <div class="notification is-success">{message}</div>
     {/if}
 
-    <!-- ----------------------------------------------------
-         Add Element Form
-         ---------------------------------------------------- -->
+
+    <!-- ======================================================
+         ADD ELEMENT FORM
+    ====================================================== -->
+
     <div class="sdw-box mb-5">
       <h2 class="subtitle has-text-weight-semibold mb-3">
         Add New Element
@@ -154,7 +212,7 @@
               <select id="category" bind:value={category} required>
                 <option value="">Select Category</option>
 
-                <!-- Revenue ERR Categories -->
+                <!-- Revenue ERR Primary Categories -->
                 <option value="REMOTE_WORKING_DAILY_ALLOWANCE">
                   REMOTE_WORKING_DAILY_ALLOWANCE
                 </option>
@@ -171,7 +229,7 @@
           </div>
         </div>
 
-        <!-- SubCategory (Travel and Subsistence Only) -->
+        <!-- Travel & Subsistence SubCategory -->
         {#if category === "TRAVEL_AND_SUBSISTENCE"}
           <div class="column is-half">
             <div class="field">
@@ -186,7 +244,6 @@
                 >
                   <option value="">Select SubCategory</option>
 
-                  <!-- Dynamically render travel and subsistence subcategories -->
                   {#each travelSubCategories as sub}
                     <option value={sub}>{sub}</option>
                   {/each}
@@ -212,7 +269,7 @@
           </div>
         </div>
 
-        <!-- Rate (Only for Remote Working Allowance) -->
+        <!-- Remote Working Rate -->
         {#if category === "REMOTE_WORKING_DAILY_ALLOWANCE"}
           <div class="column is-half">
             <div class="field">
@@ -238,12 +295,15 @@
       </button>
     </div>
 
-    <!-- ----------------------------------------------------
-         Element List Table
-         ---------------------------------------------------- -->
+
+    <!-- ======================================================
+         ELEMENT LIST TABLE
+    ====================================================== -->
+    <!-- Displays editable list of existing element definitions -->
+
     <div class="sdw-box">
       <h2 class="subtitle has-text-weight-semibold mb-3">
-        Active Elements
+       Active Elements
       </h2>
 
       {#if loading}
@@ -260,12 +320,122 @@
           </thead>
           <tbody>
             {#each elements as el}
-              <tr>
+
+              <!-- Click row to enable inline edit mode -->
+              <tr
+                on:click={() => el.editMode = true}
+                style="cursor:pointer"
+              >
                 <td>{el.category}</td>
                 <td>{el.subCategory ?? "-"}</td>
                 <td>{el.description}</td>
                 <td>{el.rate ?? "-"}</td>
               </tr>
+
+              <!-- Inline Edit Row -->
+              {#if el.editMode}
+                <tr>
+                  <td colspan="4">
+
+                    <div class="columns is-multiline">
+
+                      <!-- Category Edit -->
+                      <div class="column is-half">
+                        <label class="label" for="category">Category</label>
+                        <div class="select is-fullwidth">
+                          <select id="category" bind:value={el.category}>
+                            <option value="REMOTE_WORKING_DAILY_ALLOWANCE">
+                              REMOTE_WORKING_DAILY_ALLOWANCE
+                            </option>
+                            <option value="SMALL_BENEFITS_EXEMPTION">
+                              SMALL_BENEFITS_EXEMPTION
+                            </option>
+                            <option value="TRAVEL_AND_SUBSISTENCE">
+                              TRAVEL_AND_SUBSISTENCE
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <!-- Conditional SubCategory Edit -->
+                      {#if el.category === "TRAVEL_AND_SUBSISTENCE"}
+                        <div class="column is-half">
+                          <label class="label" for="subCategory">SubCategory</label>
+                          <div class="select is-fullwidth">
+                            <select id="subCategory" bind:value={el.subCategory}>
+                              {#each travelSubCategories as sub}
+                                <option value={sub}>{sub}</option>
+                              {/each}
+                            </select>
+                          </div>
+                        </div>
+                      {/if}
+
+                      <!-- Description Edit -->
+                      <div class="column is-full">
+                        <label class="label" for="description">Description</label>
+                        <input class="input" id="description" bind:value={el.description} />
+                      </div>
+
+                      <!-- Conditional Rate Edit -->
+                      {#if el.category === "REMOTE_WORKING_DAILY_ALLOWANCE"}
+                        <div class="column is-half">
+                          <label class="label" for="rate">Rate</label>
+                          <input
+                            class="input"
+                            id="rate"
+                            type="number"
+                            step="0.01"
+                            bind:value={el.rate}
+                          />
+                        </div>
+                      {/if}
+
+                    </div>
+
+                    <!-- Save / Cancel Buttons -->
+                    <div class="mt-3">
+                      <button
+                        class="button is-success mr-2"
+                        on:click={async () => {
+                          const token = localStorage.getItem("token");
+
+                          const res = await fetch(
+                            `http://localhost:5500/api/elements/${el._id}`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${token}`,
+                              },
+                              body: JSON.stringify(el),
+                            }
+                          );
+
+                          if (res.ok) {
+                            message = "Element updated successfully!";
+                            el.editMode = false;
+                            fetchElements();
+                          } else {
+                            error = "Failed to update element.";
+                          }
+                        }}
+                      >
+                        Save Changes
+                      </button>
+
+                      <button
+                        class="button is-light"
+                        on:click={() => el.editMode = false}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+
+                  </td>
+                </tr>
+              {/if}
+
             {/each}
           </tbody>
         </table>

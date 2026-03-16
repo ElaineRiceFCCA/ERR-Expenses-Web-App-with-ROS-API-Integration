@@ -56,6 +56,60 @@ router.post("/claim", protect, async (req, res) => {
 });
 
 // ----------------------------------------------------
+// PUT /api/processor/claim/:id
+// Updates a pending claim only
+// ----------------------------------------------------
+router.put("/claim/:id", protect, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { description, payDate, employee, element, days, amount } = req.body;
+
+    const claim = await Claim.findById(id);
+
+    if (!claim) {
+      return res.status(404).json({ message: "Claim not found" });
+    }
+
+    // Only allow editing of pending claims
+    if (claim.status !== "pending") {
+      return res.status(400).json({
+        message: "Only pending claims can be edited",
+      });
+    }
+
+    const el = await Element.findById(element);
+    if (!el) {
+      return res.status(400).json({ message: "Invalid element" });
+    }
+
+    let finalAmount = amount;
+
+    // Reapply category logic on update
+    if (el.category === "REMOTE_WORKING_DAILY_ALLOWANCE") {
+      if (!days) {
+        return res.status(400).json({ message: "Days required" });
+      }
+      finalAmount = days * el.rate;
+    }
+
+    claim.description = description;
+    claim.payDate = new Date(payDate);
+    claim.employee = employee;
+    claim.element = element;
+    claim.days = days;
+    claim.amount = finalAmount;
+
+    await claim.save();
+
+    res.json({ message: "Claim updated successfully", claim });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Error updating claim", error: err.message });
+  }
+});
+
+// ----------------------------------------------------
 // GET /api/processor/claims
 // Returns all pending claims for ERR generation
 // ----------------------------------------------------

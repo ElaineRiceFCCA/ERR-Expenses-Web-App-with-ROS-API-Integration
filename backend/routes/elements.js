@@ -3,6 +3,7 @@ import { protect } from "../middleware/auth.js";
 import {
   getAllElements,
   createElement,
+  updateElement,
 } from "../controllers/elementController.js";
 
 const router = express.Router();
@@ -16,5 +17,10 @@ router.get("/", protect, getAllElements);
 // Creates a new ERR element
 // Requires authenticated user
 router.post("/", protect, createElement);
+
+// PUT /api/elements/:id
+// Updates an existing ERR element
+// Requires authenticated user
+router.put("/:id", protect, updateElement);
 
 export default router;

@@ -3,6 +3,7 @@ import { protect } from "../middleware/auth.js";
 import {
   getEmployees,
   createEmployee,
+  updateEmployee,
 } from "../controllers/employeeController.js";
 
 const router = express.Router();
@@ -16,5 +17,10 @@ router.get("/", protect, getEmployees);
 // Creates a new employee
 // Requires authenticated user
 router.post("/", protect, createEmployee);
+
+// PUT /api/employees/:id
+// Updates an existing employee
+// Requires authenticated user
+router.put("/:id", protect, updateEmployee);
 
 export default router;
