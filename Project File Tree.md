@@ -1,24 +1,39 @@
 # File Tree: ERR-Expenses-Web-App-with-ROS-API-Integration
 
-**Generated:** 2/14/2026, 7:01:01 AM
+**Generated:** 3/18/2026, 7:05:38 PM
+**Root Path:** `c:\Users\elain\OneDrive\Documents\SETU HDip in Computer Science\Final Project\ERR-Expenses-Web-App-with-ROS-API-Integration`
 
 ```
+├── 📁 Documentation
+│   └── 📘 Final-Report.docx
+├── 📁 RevenueSigningService
+│   ├── 📁 Properties
+│   │   └── ⚙️ launchSettings.json
+│   ├── 📁 certs
+│   ├── 📄 Program.cs
+│   ├── 📄 RevenueSigningService.csproj
+│   ├── ⚙️ appsettings.Development.json
+│   └── ⚙️ appsettings.json
+├── 📁 Webpage
+│   ├── 🖼️ image.png
+│   ├── 🌐 index.html
+│   ├── 🖼️ profile.png
+│   └── 🎨 styles.css
 ├── 📁 backend
 │   ├── 📁 certs
-│   │   ├── 📄 888802969.p12
-│   │   ├── 📄 decryption_fail.txt
-│   │   ├── ⚙️ paye-employers-rest-api-pit3.json
-│   │   └── 📄 revenue-private-key.pem
+│   │   └── ⚙️ paye-employers-rest-api-pit3.json
 │   ├── 📁 config
 │   │   └── 📄 db.js
 │   ├── 📁 controllers
+│   │   ├── 📄 adminReportController.js
 │   │   ├── 📄 authController.js
+│   │   ├── 📄 companyController.js
 │   │   ├── 📄 elementController.js
 │   │   ├── 📄 employeeController.js
+│   │   ├── 📄 errSubmissionController.js
 │   │   ├── 📄 home-controller.js
+│   │   ├── 📄 reportController.js
 │   │   └── 📄 userController.js
-│   ├── 📁 exports
-│   │   └── ⚙️ ERI4-2026011N-ER1.json
 │   ├── 📁 middleware
 │   │   └── 📄 auth.js
 │   ├── 📁 models
@@ -26,27 +41,33 @@
 │   │   ├── 📄 Company.js
 │   │   ├── 📄 Element.js
 │   │   ├── 📄 Employee.js
-│   │   ├── 📄 Users.js
+│   │   ├── 📄 Submission.js
+│   │   ├── 📄 users.js
 │   │   └── 📄 web-routes.js
 │   ├── 📁 routes
 │   │   ├── 📄 admin.js
+│   │   ├── 📄 adminReports.js
 │   │   ├── 📄 auth.js
+│   │   ├── 📄 company.js
 │   │   ├── 📄 elements.js
 │   │   ├── 📄 employees.js
 │   │   ├── 📄 processor.js
+│   │   ├── 📄 reports.js
 │   │   ├── 📄 revenue.js
 │   │   └── 📄 submissions.js
 │   ├── 📁 services
 │   │   ├── 📄 errSubmissionCtrl.js
-│   │   ├── 📄 revenueCert.js
-│   │   └── 📄 revenueHandshake.js
+│   │   ├── 📄 revenueHandshake.js
+│   │   └── 📄 rosErrClient.js
+│   ├── 📁 tools
+│   │   ├── 📄 rosCanonicalDebug.js
+│   │   └── 📄 verifyDigest.js
 │   ├── 📁 utils
 │   │   ├── ⚙️ Sample_Submission.json
 │   │   ├── 📄 createClaims.js
 │   │   ├── 📄 createCompany.js
 │   │   ├── 📄 createElements.js
 │   │   ├── 📄 createEmployees.js
-│   │   ├── 📄 createSubmissionCtrl.js
 │   │   ├── 📄 createSubmissionData.js
 │   │   └── 📄 createUsers.js
 │   ├── ⚙️ package-lock.json
@@ -68,6 +89,8 @@
 │   │   │   └── 📄 index.ts
 │   │   ├── 📁 routes
 │   │   │   ├── 📁 admin
+│   │   │   │   ├── 📁 reports
+│   │   │   │   │   └── 📄 +page.svelte
 │   │   │   │   ├── 📁 revenue
 │   │   │   │   │   └── 📄 +page.svelte
 │   │   │   │   └── 📄 +page.svelte
@@ -76,6 +99,16 @@
 │   │   │   ├── 📁 login
 │   │   │   │   └── 📄 +page.svelte
 │   │   │   ├── 📁 processor
+│   │   │   │   ├── 📁 company
+│   │   │   │   │   └── 📄 +page.svelte
+│   │   │   │   ├── 📁 elements
+│   │   │   │   │   └── 📄 +page.svelte
+│   │   │   │   ├── 📁 employees
+│   │   │   │   │   └── 📄 +page.svelte
+│   │   │   │   ├── 📁 reports
+│   │   │   │   │   └── 📄 +page.svelte
+│   │   │   │   ├── 📁 submissions
+│   │   │   │   │   └── 📄 +page.svelte
 │   │   │   │   └── 📄 +page.svelte
 │   │   │   └── 📄 +layout.svelte
 │   │   ├── 🎨 app.css
@@ -90,6 +123,8 @@
 │   ├── ⚙️ tsconfig.json
 │   └── 📄 vite.config.ts
 ├── ⚙️ .gitignore
+├── 📄 ERR-Expenses-Web-App-with-ROS-API-Integration.sln
+├── 📝 Project File Tree.md
 └── 📝 README.md
 ```
 
